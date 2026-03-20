@@ -367,29 +367,6 @@
   .empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
   .empty-text { font-size: 13px; }
 
-  /* ── SETUP BANNER ── */
-  .setup-banner {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    line-height: 1.7;
-  }
-
-  .setup-banner strong { color: var(--text); }
-  .setup-banner code {
-    font-family: var(--mono);
-    font-size: 11px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 1px 6px;
-    border-radius: 3px;
-    color: var(--accent);
-  }
-
   /* ── STATS ROW ── */
   .stats-row {
     display: grid;
@@ -593,12 +570,6 @@
 
   <main class="main">
 
-    <div class="setup-banner" id="setupBanner">
-      <strong>Connect your Google Sheet</strong><br>
-      Edit the <code>SHEET_ID</code> and <code>SHEET_NAME</code> variables at the top of this file's script section to point to your Signals Log sheet. The sheet needs to be published (File → Share → Publish to web) or publicly readable.<br><br>
-      Below is a live preview using sample data. Once connected, this dashboard auto-updates every time the Friday script runs.
-    </div>
-
     <div class="stats-row" id="statsRow"></div>
 
     <div class="search-row">
@@ -670,7 +641,6 @@ async function loadData() {
   }
 
   document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>Loading from Google Sheets…</div>';
-  document.getElementById('setupBanner').style.display = 'none';
 
   try {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
