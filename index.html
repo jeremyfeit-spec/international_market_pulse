@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Pulse — Competitive Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f11;
+    --surface: #14171a;
+    --surface2: #1c2026;
+    --border: #252a30;
+    --border2: #2e343c;
+    --text: #e8eaed;
+    --muted: #6b7280;
+    --subtle: #374151;
+    --accent: #3b82f6;
+    --accent-dim: rgba(59,130,246,0.12);
+    --green: #10b981;
+    --green-dim: rgba(16,185,129,0.12);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245,158,11,0.12);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.12);
+    --purple: #8b5cf6;
+    --purple-dim: rgba(139,92,246,0.12);
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,15,17,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .badge-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .btn-refresh {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(59,130,246,0.3);
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-refresh:hover { background: rgba(59,130,246,0.2); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+
+  .sidebar-section {
+    margin-bottom: 28px;
+  }
+
+  .sidebar-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 0 16px;
+    margin-bottom: 8px;
+  }
+
+  .filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 16px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-align: left;
+  }
+  .filter-btn:hover { color: var(--text); background: var(--surface); }
+  .filter-btn.active { color: var(--text); background: var(--surface2); }
+  .filter-btn.active .filter-dot { opacity: 1; }
+
+  .filter-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    opacity: 0.35;
+    flex-shrink: 0;
+  }
+
+  .filter-count {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--subtle);
+  }
+
+  /* ── MAIN ── */
+  .main {
+    padding: 24px 28px;
+    max-width: 900px;
+  }
+
+  /* ── SEARCH ── */
+  .search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 8px 12px 8px 34px;
+    outline: none;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+  .search-input:focus { border-color: var(--accent); }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+  }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .select-filter {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 8px 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  .select-filter option { background: var(--surface2); }
+
+  /* ── WEEK SECTION ── */
+  .week-section {
+    margin-bottom: 32px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .week-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .week-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--subtle);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: auto;
+  }
+
+  /* ── SIGNAL CARD ── */
+  .signal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    transition: border-color 0.15s;
+    cursor: default;
+  }
+  .signal-card:hover { border-color: var(--border2); }
+  .signal-card.high { border-left: 2px solid var(--accent); }
+  .signal-card.hidden { display: none; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .company-link {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .company-link:hover { color: var(--accent); }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .tag-tier-direct    { background: var(--red-dim);    color: #fca5a5; }
+  .tag-tier-adjacent  { background: var(--green-dim);  color: #6ee7b7; }
+  .tag-tier-ma        { background: var(--amber-dim);  color: #fcd34d; }
+  .tag-type           { background: var(--surface2);   color: var(--muted); border: 1px solid var(--border); }
+  .tag-high           { background: var(--accent-dim); color: #93c5fd; }
+  .tag-region         { background: var(--purple-dim); color: #c4b5fd; }
+
+  .card-headline {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 5px;
+    line-height: 1.4;
+  }
+
+  .card-summary {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .card-sources {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .source-link {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.1s;
+  }
+  .source-link:hover { opacity: 1; }
+
+  .source-sep {
+    color: var(--subtle);
+    font-size: 10px;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
+  .empty-text { font-size: 13px; }
+
+  /* ── SETUP BANNER ── */
+  .setup-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .setup-banner strong { color: var(--text); }
+  .setup-banner code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── LOADING ── */
+  .loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 40px 0;
+  }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── FEEDBACK BOX ── */
+  .feedback-section {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .feedback-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .feedback-textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 10px 12px;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.15s;
+  }
+  .feedback-textarea:focus { border-color: var(--accent); }
+  .feedback-textarea::placeholder { color: var(--subtle); }
+
+  .feedback-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    align-items: center;
+  }
+
+  .btn-submit {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(59,130,246,0.3);
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-submit:hover { background: rgba(59,130,246,0.2); }
+
+  .feedback-hint {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .feedback-saved {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    display: none;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  @media (max-width: 700px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .stats-row { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Market Pulse
+  </div>
+  <div class="topbar-right">
+    <span class="badge-count" id="totalBadge">— signals</span>
+    <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tier</div>
+      <button class="filter-btn active" data-filter="tier" data-value="all" onclick="setFilter('tier','all',this)">
+        <span class="filter-dot" style="background:var(--muted)"></span>All tiers
+        <span class="filter-count" id="count-tier-all"></span>
+      </button>
+      <button class="filter-btn" data-filter="tier" data-value="Direct" onclick="setFilter('tier','Direct',this)">
+        <span class="filter-dot" style="background:var(--red)"></span>Direct
+        <span class="filter-count" id="count-tier-Direct"></span>
+      </button>
+      <button class="filter-btn" data-filter="tier" data-value="Adjacent" onclick="setFilter('tier','Adjacent',this)">
+        <span class="filter-dot" style="background:var(--green)"></span>Adjacent
+        <span class="filter-count" id="count-tier-Adjacent"></span>
+      </button>
+      <button class="filter-btn" data-filter="tier" data-value="M&A Watch" onclick="setFilter('tier','M&A Watch',this)">
+        <span class="filter-dot" style="background:var(--amber)"></span>M&A Watch
+        <span class="filter-count" id="count-tier-ma"></span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Signal type</div>
+      <button class="filter-btn active" data-filter="type" data-value="all" onclick="setFilter('type','all',this)">
+        <span class="filter-dot" style="background:var(--muted)"></span>All types
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="Funding" onclick="setFilter('type','Funding',this)">
+        <span class="filter-dot" style="background:#34d399"></span>Funding
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="Product" onclick="setFilter('type','Product',this)">
+        <span class="filter-dot" style="background:#60a5fa"></span>Product
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="Strategy" onclick="setFilter('type','Strategy',this)">
+        <span class="filter-dot" style="background:#a78bfa"></span>Strategy
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="Regulatory" onclick="setFilter('type','Regulatory',this)">
+        <span class="filter-dot" style="background:#fb923c"></span>Regulatory
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="Pricing" onclick="setFilter('type','Pricing',this)">
+        <span class="filter-dot" style="background:#f472b6"></span>Pricing
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="Hiring" onclick="setFilter('type','Hiring',this)">
+        <span class="filter-dot" style="background:#facc15"></span>Hiring
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="M&A Signal" onclick="setFilter('type','M&A Signal',this)">
+        <span class="filter-dot" style="background:#f87171"></span>M&A Signal
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Importance</div>
+      <button class="filter-btn active" data-filter="importance" data-value="all" onclick="setFilter('importance','all',this)">
+        <span class="filter-dot" style="background:var(--muted)"></span>All
+      </button>
+      <button class="filter-btn" data-filter="importance" data-value="High" onclick="setFilter('importance','High',this)">
+        <span class="filter-dot" style="background:var(--accent)"></span>High only
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="setup-banner" id="setupBanner">
+      <strong>Connect your Google Sheet</strong><br>
+      Edit the <code>SHEET_ID</code> and <code>SHEET_NAME</code> variables at the top of this file's script section to point to your Signals Log sheet. The sheet needs to be published (File → Share → Publish to web) or publicly readable.<br><br>
+      Below is a live preview using sample data. Once connected, this dashboard auto-updates every time the Friday script runs.
+    </div>
+
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="search-row">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" type="text" placeholder="Search companies, signals, summaries…" id="searchInput" oninput="applyFilters()">
+      </div>
+      <select class="select-filter" id="weekSelect" onchange="applyFilters()">
+        <option value="all">All weeks</option>
+      </select>
+    </div>
+
+    <div id="content"></div>
+
+    <div class="feedback-section">
+      <div class="feedback-label">Feedback for next digest</div>
+      <textarea class="feedback-textarea" id="feedbackText" placeholder="e.g. Include more EU e-invoicing regulatory updates · Less focus on US-only companies · Always include Pennylane and Xero · Add Brazil LatAm signals…"></textarea>
+      <div class="feedback-row">
+        <button class="btn-submit" onclick="saveFeedback()">Save feedback</button>
+        <span class="feedback-hint">Saved locally — copy into your Apps Script prompt to apply next Friday</span>
+        <span class="feedback-saved" id="feedbackSaved">✓ Saved</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────
+// CONFIG — replace with your actual Google Sheet details
+// Sheet must be published: File → Share → Publish to web
+// ─────────────────────────────────────────────────────
+const SHEET_ID   = 'YOUR_GOOGLE_SHEET_ID_HERE';
+const SHEET_NAME = 'Signals Log';
+
+// ─────────────────────────────────────────────────────
+// SAMPLE DATA — used when sheet is not yet connected
+// Replace with real data once sheet is live
+// ─────────────────────────────────────────────────────
+const SAMPLE_DATA = [
+  { date:'2026-03-20', company:'Silverfin (Visma)', website:'https://silverfin.com', tier:'Direct', region:'EU-Belgium', signal_type:'Strategy', importance:'High', headline:'New CEO An Maes appointed to accelerate European expansion', summary:'Silverfin has appointed An Maes as CEO with a mandate to push into UK, Netherlands, Luxembourg and Denmark. She previously led all international growth outside Belgium. Silverfin already serves 90% of large Belgian firms and 30 of the UK top 100.', source_urls:'https://www.coffeefranchisehub.com/archives/42480' },
+  { date:'2026-03-20', company:'Pennylane', website:'https://pennylane.com', tier:'Direct', region:'EU-France', signal_type:'Funding', importance:'High', headline:'€175M Series E closed at €4.25B valuation for European expansion', summary:'Pennylane closed a €175M Series E led by TCV and Blackstone. Capital is going toward Germany localisation, an AI accountant co-pilot, and e-invoicing infrastructure. Goal: become the reference accounting OS for continental Europe.', source_urls:'https://eu-startups.com/2026/01/sequoia-backed-french-accounting-unicorn-pennylane-secures-e175-million-as-it-approaches-profitability/\nhttps://tech.eu/2026/01/20/french-accounting-software-platform-pennylane-raises-200m/' },
+  { date:'2026-03-20', company:'Vic.ai', website:'https://vic.ai', tier:'Direct', region:'EU-Nordics', signal_type:'Product', importance:'High', headline:'VicInbox launched in Microsoft 365 Outlook marketplace globally', summary:'Vic.ai launched VicInbox into the Microsoft Outlook marketplace, putting autonomous AP directly inside enterprise email workflows. Expanded AP Autopilot and self-service ACH payment automation also shipped in Q1 2026.', source_urls:'https://www.vic.ai/blog/q1-2026-product-release-expanding-autonomy-across-the-ap-lifecycle' },
+  { date:'2026-03-20', company:'Xero', website:'https://xero.com', tier:'Direct', region:'APAC-ANZ', signal_type:'Pricing', importance:'Medium', headline:'New tiered API pricing went live 2 March — backlash from AU and UK partners', summary:'Xero retired its revenue share model for a five-tier API pricing system ($0–$1,445/mo based on connections and data egress). Significant backlash from Australian and UK accounting partner ecosystem. Xerocon London confirmed 8–9 July.', source_urls:'https://www.accountantsdaily.com.au/technology/21986-all-you-can-eat-xero-data-buffet-comes-to-abrupt-end\nhttps://blog.xero.com/' },
+  { date:'2026-03-20', company:'Xero', website:'https://xero.com', tier:'Direct', region:'APAC-ANZ', signal_type:'Strategy', importance:'Medium', headline:'International revenue up 24% YoY; UK strongest market at 25% growth', summary:'H1 FY26 results show international revenue of $530M (+24% YoY). UK is Xero\'s strongest international market. Melio acquisition expected to push pro-forma US revenue to $241M (+53% YoY).', source_urls:'https://www.investing.com/news/company-news/xero-h1-fy26-presentation-slides-20-revenue-growth-amid-melio-acquisition-93CH-4397685' },
+  { date:'2026-03-20', company:'Payhawk', website:'https://payhawk.com', tier:'Adjacent', region:'UK', signal_type:'Funding', importance:'High', headline:'$100M raise reported at ~$2B valuation to counter Brex EU entry', summary:'Payhawk is reportedly raising $100M at ~$2B valuation. Built around an agentic AI model for autonomous finance tasks. The raise is a direct response to Brex entering Europe with a newly secured EU licence. If closes, EU spend management consolidation accelerates.', source_urls:'https://techfundingnews.com/payhawk-to-raise-100m-at-2b-valuation-to-achieve-60-faster-workflows-with-ai-agents/' },
+  { date:'2026-03-20', company:'Pleo', website:'https://pleo.io', tier:'Adjacent', region:'EU-Nordics', signal_type:'Product', importance:'Medium', headline:'Cash Management suite live in UK and Germany; revenue up 56% YoY', summary:'Pleo launched its Cash Management suite in UK and Germany, expanding into multi-currency treasury management. Revenue estimated at $59M in 2024, up 56% YoY across 40,000+ European customers. Also adding AP automation and AI fraud detection via Taktile.', source_urls:'https://sacra.com/c/pleo/' },
+  { date:'2026-03-20', company:'Spendesk', website:'https://spendesk.com', tier:'Adjacent', region:'EU-France', signal_type:'Strategy', importance:'Medium', headline:'Reached profitability; launched regulated financial services', summary:'Spendesk reached profitability and launched regulated financial services, doubling spend under management. Moving upmarket toward enterprise with multi-entity support and embedded AI capabilities via strategic partnerships.', source_urls:'https://sacra.com/c/pleo/' },
+  { date:'2026-03-20', company:'Avalara', website:'https://avalara.com', tier:'Adjacent', region:'US/Global', signal_type:'Product', importance:'High', headline:'Avalara NEXT event 26 Mar: Returns Agent launch + Xero AI certification', summary:'Avalara NEXT virtual event on 26 March will launch the Returns Agent for global filing automation and demo AI-infused certification with Xero targeting UK, AU and NZ. Also published UAE e-invoicing mandate guidance this week.', source_urls:'https://newsroom.avalara.com/2026-03-12-Registration-Open-for-Avalara-NEXT-2026-Exploring-the-Future-of-Agentic-Tax-and-Compliance\nhttps://www.avalara.com/blog/en/europe/2026/03/uae-e-invoicing-mandate-2026-readiness-asp-pint-ae.html' },
+  { date:'2026-03-20', company:'Sovos', website:'https://sovos.com', tier:'Adjacent', region:'US/Global', signal_type:'Regulatory', importance:'Medium', headline:'France 2026 Budget Law confirmed: B2B e-invoicing mandate locked from Sep 2026', summary:'France formally adopted its 2026 Budget Law on 2 February, confirming B2B e-invoicing from September 2026. Penalties set at €50/invoice. Non-established entities reprieved to September 2027. The mandate structure is now legally settled.', source_urls:'https://sovos.com/regulatory-updates/vat/france-approves-2026-budget-law-confirming-key-amendments-to-the-e-invoicing-and-e-reporting-mandate/' },
+  { date:'2026-03-20', company:'Qive / Arquivei', website:'https://qive.com.br', tier:'M&A Watch', region:'LatAm-Brazil', signal_type:'Regulatory', importance:'Medium', headline:'Brazil 2026 tax reform: biggest fiscal compliance overhaul in 20 years', summary:'Brazil\'s dual VAT reform (CBS + IBS) is live from 2026, replacing multiple existing taxes. New mandatory NF-e/NFC-e invoice layouts active from 1 January. National NFS-e now mandatory across all municipalities. São Paulo abolished its SAT fiscal device. Directly expands the addressable market for Qive\'s SEFAZ compliance platform.', source_urls:'https://www.fonoa.com/resources/blog/brazil-tax-reform-e-invoicing-2026\nhttps://www.fiscal-requirements.com/news/4809\nhttps://www.vatcalc.com/brazil/brazil-nota-fiscal-eletronica-e-invoicing-update/' },
+];
+
+// ─────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────
+let allSignals = [];
+let filters = { tier: 'all', type: 'all', importance: 'all' };
+let usingLiveData = false;
+
+// ─────────────────────────────────────────────────────
+// LOAD DATA
+// ─────────────────────────────────────────────────────
+async function loadData() {
+  if (SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE') {
+    allSignals = SAMPLE_DATA.map(parseRow);
+    renderAll();
+    return;
+  }
+
+  document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>Loading from Google Sheets…</div>';
+  document.getElementById('setupBanner').style.display = 'none';
+
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const res  = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = json.table.rows;
+    const cols = json.table.cols.map(c => c.label);
+
+    allSignals = rows.map(row => {
+      const obj = {};
+      cols.forEach((col, i) => { obj[col] = row.c[i] ? (row.c[i].v || '') : ''; });
+      return parseRow(obj);
+    }).filter(s => s.has_signal);
+
+    usingLiveData = true;
+    renderAll();
+  } catch(e) {
+    document.getElementById('content').innerHTML = '<div class="empty"><div class="empty-icon">⚠</div><div class="empty-text">Could not load sheet. Check SHEET_ID and ensure the sheet is published.</div></div>';
+  }
+}
+
+function parseRow(r) {
+  const sources = (r.source_urls || r['Source URLs'] || '').toString().split('\n').filter(Boolean);
+  return {
+    date:        r.date        || r['Date']        || '',
+    company:     r.company     || r['Company']     || '',
+    website:     r.website     || r['Website']     || '',
+    tier:        r.tier        || r['Tier']        || 'Adjacent',
+    region:      r.region      || r['Region']      || '',
+    signal_type: r.signal_type || r['Signal Type'] || '',
+    importance:  r.importance  || r['Importance']  || 'Medium',
+    headline:    r.headline    || r['Headline']    || '',
+    summary:     r.summary     || r['Summary']     || '',
+    source_urls: sources,
+    has_signal:  true,
+  };
+}
+
+// ─────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────
+function renderAll() {
+  updateStats();
+  populateWeekSelect();
+  applyFilters();
+}
+
+function updateStats() {
+  const high    = allSignals.filter(s => s.importance === 'High').length;
+  const direct  = allSignals.filter(s => s.tier === 'Direct').length;
+  const adjacent = allSignals.filter(s => s.tier === 'Adjacent').length;
+  const ma      = allSignals.filter(s => s.tier === 'M&A Watch').length;
+  const weeks   = [...new Set(allSignals.map(s => s.date.substring(0,7)))].length;
+
+  document.getElementById('totalBadge').textContent = allSignals.length + ' signals';
+  document.getElementById('count-tier-all').textContent     = allSignals.length;
+  document.getElementById('count-tier-Direct').textContent  = direct;
+  document.getElementById('count-tier-Adjacent').textContent = adjacent;
+  document.getElementById('count-tier-ma').textContent      = ma;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-box"><div class="stat-num">${allSignals.length}</div><div class="stat-label">Total signals</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--accent)">${high}</div><div class="stat-label">High importance</div></div>
+    <div class="stat-box"><div class="stat-num">${weeks}</div><div class="stat-label">Weeks tracked</div></div>
+    <div class="stat-box"><div class="stat-num">${ma}</div><div class="stat-label">M&A watch signals</div></div>
+  `;
+}
+
+function populateWeekSelect() {
+  const sel   = document.getElementById('weekSelect');
+  const weeks = [...new Set(allSignals.map(s => s.date))].sort().reverse();
+  sel.innerHTML = '<option value="all">All weeks</option>';
+  weeks.forEach(w => {
+    const opt = document.createElement('option');
+    opt.value = w;
+    opt.textContent = 'Week of ' + w;
+    sel.appendChild(opt);
+  });
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const week   = document.getElementById('weekSelect').value;
+
+  const filtered = allSignals.filter(s => {
+    if (filters.tier !== 'all' && s.tier !== filters.tier) return false;
+    if (filters.type !== 'all' && s.signal_type !== filters.type) return false;
+    if (filters.importance !== 'all' && s.importance !== filters.importance) return false;
+    if (week !== 'all' && s.date !== week) return false;
+    if (search) {
+      const hay = (s.company + s.headline + s.summary + s.signal_type + s.region).toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
+    return true;
+  });
+
+  renderSignals(filtered);
+}
+
+function renderSignals(signals) {
+  if (!signals.length) {
+    document.getElementById('content').innerHTML = '<div class="empty"><div class="empty-icon">◈</div><div class="empty-text">No signals match your filters.</div></div>';
+    return;
+  }
+
+  // Group by date
+  const byDate = {};
+  signals.forEach(s => {
+    if (!byDate[s.date]) byDate[s.date] = [];
+    byDate[s.date].push(s);
+  });
+
+  const dates = Object.keys(byDate).sort().reverse();
+  let html = '';
+
+  dates.forEach(date => {
+    const items = byDate[date];
+    html += `<div class="week-section">
+      <div class="week-header">
+        <span class="week-label">Week of ${date}</span>
+        <span class="week-count">${items.length} signal${items.length !== 1 ? 's' : ''}</span>
+      </div>`;
+
+    // Sort: High first, then by tier
+    const sorted = items.sort((a,b) => {
+      const imp = {High:0,Medium:1,Low:2};
+      return (imp[a.importance]||1) - (imp[b.importance]||1);
+    });
+
+    sorted.forEach(s => {
+      const tierClass = s.tier === 'Direct' ? 'tag-tier-direct' : s.tier === 'Adjacent' ? 'tag-tier-adjacent' : 'tag-tier-ma';
+      const isHigh    = s.importance === 'High';
+      const companyEl = s.website
+        ? `<a class="company-link" href="${s.website}" target="_blank" rel="noopener">${escHtml(s.company)}</a>`
+        : `<span class="company-link">${escHtml(s.company)}</span>`;
+
+      const sources = s.source_urls.map((url, i) => {
+        const label = s.source_urls.length > 1 ? `source ${i+1}` : 'source';
+        return `<a class="source-link" href="${url}" target="_blank" rel="noopener">${label}</a>`;
+      }).join('<span class="source-sep"> · </span>');
+
+      html += `<div class="signal-card ${isHigh ? 'high' : ''}">
+        <div class="card-top">
+          ${companyEl}
+          <div class="card-meta">
+            <span class="tag tag-type">${escHtml(s.signal_type)}</span>
+            <span class="tag ${tierClass}">${escHtml(s.tier)}</span>
+            ${s.region ? `<span class="tag tag-region">${escHtml(s.region)}</span>` : ''}
+            ${isHigh ? `<span class="tag tag-high">High</span>` : ''}
+          </div>
+        </div>
+        <div class="card-headline">${escHtml(s.headline)}</div>
+        <div class="card-summary">${escHtml(s.summary)}</div>
+        ${sources ? `<div class="card-sources">${sources}</div>` : ''}
+      </div>`;
+    });
+
+    html += '</div>';
+  });
+
+  document.getElementById('content').innerHTML = html;
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────────────────
+// FILTERS
+// ─────────────────────────────────────────────────────
+function setFilter(key, value, btn) {
+  filters[key] = value;
+  document.querySelectorAll(`[data-filter="${key}"]`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+// ─────────────────────────────────────────────────────
+// FEEDBACK
+// ─────────────────────────────────────────────────────
+function saveFeedback() {
+  const text = document.getElementById('feedbackText').value.trim();
+  if (!text) return;
+  localStorage.setItem('marketpulse_feedback', text);
+  const saved = document.getElementById('feedbackSaved');
+  saved.style.display = 'inline';
+  setTimeout(() => { saved.style.display = 'none'; }, 2500);
+}
+
+// Load saved feedback on open
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('marketpulse_feedback');
+  if (saved) document.getElementById('feedbackText').value = saved;
+  loadData();
+});
+</script>
+</body>
+</html>
