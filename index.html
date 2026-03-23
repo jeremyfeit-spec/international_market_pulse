@@ -262,6 +262,93 @@
     font-size: 10px;
   }
 
+  /* ── VIEW TABS ── */
+  .view-tabs {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .view-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .view-tab:hover { color: var(--text); background: var(--surface); }
+  .view-tab.active {
+    color: var(--text);
+    background: var(--surface2);
+    border-color: var(--border);
+  }
+
+  /* ── ARCHIVE TABLE ── */
+  .archive-wrap {
+    overflow-x: auto;
+    margin-top: 4px;
+  }
+  .archive-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .archive-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .archive-table th:hover { color: var(--text); }
+  .archive-table th .sort-ind { margin-left: 4px; opacity: 0.4; }
+  .archive-table th.sorted .sort-ind { opacity: 1; color: var(--accent); }
+  .archive-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .archive-table tr:hover td { background: var(--surface); }
+  .archive-table .cell-date { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .archive-table .cell-company { font-weight: 500; white-space: nowrap; }
+  .archive-table .cell-title { max-width: 280px; }
+  .archive-table .cell-summary { max-width: 320px; color: var(--muted); font-size: 11px; }
+  .archive-table .cell-url a { font-family: var(--mono); font-size: 10px; color: var(--accent); text-decoration: none; opacity: 0.7; }
+  .archive-table .cell-url a:hover { opacity: 1; }
+  .archive-pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .page-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .page-btn:hover { border-color: var(--border2); }
+  .page-btn:disabled { opacity: 0.3; cursor: default; }
+
   /* ── SORT SELECT ── */
   .sort-select-wrap {
     display: flex;
@@ -562,6 +649,10 @@
     <div class="logo-dot"></div>
     Market Pulse
   </div>
+  <div class="view-tabs">
+    <button class="view-tab active" id="tab-signals" onclick="switchView('signals')">Signals</button>
+    <button class="view-tab" id="tab-archive" onclick="switchView('archive')">Research Archive</button>
+  </div>
   <div class="topbar-right">
     <span class="badge-count" id="totalBadge">— signals</span>
     <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
@@ -654,6 +745,48 @@
 
     <div id="content"></div>
 
+    <!-- ── RESEARCH ARCHIVE PANEL ── -->
+    <div id="archivePanel" style="display:none;">
+      <div class="search-row">
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input class="search-input" type="text" placeholder="Search titles, companies, summaries…" id="archiveSearch" oninput="renderArchive()">
+        </div>
+        <div class="sort-select-wrap">
+          <span class="sort-label">Sort</span>
+          <select class="sort-select" id="archiveSortSelect" onchange="renderArchive()">
+            <option value="article-date-desc">Article date ↓ newest</option>
+            <option value="article-date-asc">Article date ↑ oldest</option>
+            <option value="run-date-desc">Run date ↓ newest</option>
+            <option value="company-asc">Company A → Z</option>
+          </select>
+        </div>
+      </div>
+      <div class="archive-wrap">
+        <table class="archive-table" id="archiveTable">
+          <thead>
+            <tr>
+              <th onclick="setArchiveSort('article-date-desc','article-date-asc')" id="ah-date">Article date<span class="sort-ind" id="si-date">↓</span></th>
+              <th onclick="setArchiveSort('run-date-desc','run-date-desc')" id="ah-run">Run date<span class="sort-ind" id="si-run"></span></th>
+              <th onclick="setArchiveSort('company-asc','company-desc')" id="ah-company">Company<span class="sort-ind" id="si-company"></span></th>
+              <th>Tier</th>
+              <th>Region</th>
+              <th>Title</th>
+              <th>Summary</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody id="archiveTbody"></tbody>
+        </table>
+      </div>
+      <div class="archive-pagination">
+        <button class="page-btn" id="prevPage" onclick="changePage(-1)">← Prev</button>
+        <span id="pageInfo">Page 1</span>
+        <button class="page-btn" id="nextPage" onclick="changePage(1)">Next →</button>
+        <span id="archiveCount"></span>
+      </div>
+    </div>
+
     <div class="feedback-section">
       <div class="feedback-label">Feedback for next digest</div>
       <textarea class="feedback-textarea" id="feedbackText" placeholder="e.g. Include more EU e-invoicing regulatory updates · Less focus on US-only companies · Always include Pennylane and Xero · Add Brazil LatAm signals…"></textarea>
@@ -672,8 +805,9 @@
 // CONFIG — replace with your actual Google Sheet details
 // Sheet must be published: File → Share → Publish to web
 // ─────────────────────────────────────────────────────
-const SHEET_ID   = 'YOUR_GOOGLE_SHEET_ID_HERE';
-const SHEET_NAME = 'Signals Log';
+const SHEET_ID          = 'YOUR_GOOGLE_SHEET_ID_HERE';
+const SHEET_NAME        = 'Signals Log';
+const RAW_SHEET_NAME    = 'Research Archive';
 
 // ─────────────────────────────────────────────────────
 // SAMPLE DATA — used when sheet is not yet connected
@@ -696,17 +830,35 @@ const SAMPLE_DATA = [
 // ─────────────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────────────
-let allSignals = [];
-let filters    = { tier: 'all', type: 'all', importance: 'all' };
-let activeWeek = 'all';
+let allSignals    = [];
+let allRawArticles = [];
+let filters       = { tier: 'all', type: 'all', importance: 'all' };
+let activeWeek    = 'all';
+let currentView   = 'signals';
+let archivePage   = 1;
+const ARCHIVE_PAGE_SIZE = 50;
 let usingLiveData = false;
+
+const SAMPLE_RAW = [
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-19','Company':'Pennylane','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'EU-France','Title':'Pennylane raises €175M Series E at €4.25B valuation','Summary':'French accounting startup Pennylane has raised €175M led by TCV and Blackstone to accelerate its European expansion and AI development.','URL':'https://eu-startups.com/2026/01/sequoia-backed-french-accounting-unicorn-pennylane-secures-e175-million-as-it-approaches-profitability/','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-19','Company':'Pennylane','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'EU-France','Title':'Pennylane veut devenir le logiciel de référence pour les comptables européens','Summary':'La licorne française de la comptabilité annonce une levée de fonds record pour accélérer son expansion en Allemagne et développer ses outils IA.','URL':'https://tech.eu/2026/01/20/french-accounting-software-platform-pennylane-raises-200m/','Language':'French' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-18','Company':'Silverfin (Visma)','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'EU-Belgium','Title':'Silverfin appoints An Maes as CEO to accelerate European expansion','Summary':'Cloud accounting platform Silverfin has named An Maes as its new CEO effective 1 March 2026, with a mandate to grow in the UK, Netherlands, Luxembourg and Denmark.','URL':'https://www.coffeefranchisehub.com/archives/42480','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-17','Company':'Vic.ai','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'EU-Nordics','Title':'Vic.ai Q1 2026 Product Release: Expanded AP Autonomy & Smarter Payments','Summary':'Vic.ai has launched VicInbox into the Microsoft 365 Outlook marketplace and expanded its AP Autopilot coverage for enterprise finance teams globally.','URL':'https://www.vic.ai/blog/q1-2026-product-release-expanding-autonomy-across-the-ap-lifecycle','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-16','Company':'Xero','Tier':'Direct','Category':'Core Accounting / FMS (Global SMB)','Region':'APAC-ANZ','Title':'All you can eat Xero data buffet comes to abrupt end','Summary':'Xero has retired its revenue share model replacing it with a five-tier API pricing system based on connections and data egress volume, drawing backlash from Australian and UK partners.','URL':'https://www.accountantsdaily.com.au/technology/21986-all-you-can-eat-xero-data-buffet-comes-to-abrupt-end','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-15','Company':'Payhawk','Tier':'Adjacent','Category':'Spend Management / Corporate Cards','Region':'UK','Title':'Payhawk eyes $100M raise at $2B valuation to counter Brex EU entry','Summary':'Bulgarian-founded spend management platform Payhawk is reportedly raising $100M at a ~$2B valuation, driven by its agentic AI model and a direct response to Brex securing an EU licence.','URL':'https://techfundingnews.com/payhawk-to-raise-100m-at-2b-valuation-to-achieve-60-faster-workflows-with-ai-agents/','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-15','Company':'Avalara','Tier':'Adjacent','Category':'Broad Global Tax (VAT + Sales Tax)','Region':'US/Global','Title':'Registration Open for Avalara NEXT 2026: Exploring the Future of Agentic Tax and Compliance','Summary':'Avalara has announced programming for its virtual event on March 26 including the launch of the Returns Agent and an AI-infused certification session with Xero targeting UK, AU and NZ markets.','URL':'https://newsroom.avalara.com/2026-03-12-Registration-Open-for-Avalara-NEXT-2026-Exploring-the-Future-of-Agentic-Tax-and-Compliance','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-14','Company':'Sovos','Tier':'Adjacent','Category':'Broad Global Tax (VAT + Sales Tax)','Region':'US/Global','Title':'France Approves 2026 Budget Law Confirming E-Invoicing Mandate','Summary':'France has formally adopted its 2026 State Budget Law confirming the B2B e-invoicing mandate timeline from September 2026 with penalties of €50 per invoice.','URL':'https://sovos.com/regulatory-updates/vat/france-approves-2026-budget-law-confirming-key-amendments-to-the-e-invoicing-and-e-reporting-mandate/','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-14','Company':'Qive / Arquivei','Tier':'M&A Watch','Category':'Latin America Fiscal Compliance','Region':'LatAm-Brazil','Title':'Brazil 2026 Tax Reform: Key E-Invoicing Changes for Businesses','Summary':'Brazil tax reform introduces CBS, IBS and major e-invoicing updates including mandatory new NF-e layouts and the National NFS-e system now mandatory across all municipalities.','URL':'https://www.fonoa.com/resources/blog/brazil-tax-reform-e-invoicing-2026','Language':'English' },
+  { 'Run Date':'2026-03-20','Article Date':'2026-03-13','Company':'Pleo','Tier':'Adjacent','Category':'Spend Management / Corporate Cards','Region':'EU-Nordics','Title':'Pleo launches Cash Management suite in UK and Germany','Summary':'Pleo has rolled out its Cash Management suite to UK and German customers offering real-time multi-currency account visibility with revenue estimated at $59M in 2024 up 56% YoY.','URL':'https://sacra.com/c/pleo/','Language':'English' },
+];
 
 // ─────────────────────────────────────────────────────
 // LOAD DATA
 // ─────────────────────────────────────────────────────
 async function loadData() {
   if (SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE') {
-    allSignals = SAMPLE_DATA.map(parseRow);
+    allSignals     = SAMPLE_DATA.map(parseRow);
+    allRawArticles = SAMPLE_RAW.map(parseRawRow);
     renderAll();
     return;
   }
@@ -714,18 +866,33 @@ async function loadData() {
   document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>Loading from Google Sheets…</div>';
 
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const res  = await fetch(url);
-    const text = await res.text();
-    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const rows = json.table.rows;
-    const cols = json.table.cols.map(c => c.label);
-
-    allSignals = rows.map(row => {
+    // Load Signals Log
+    const url1  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const res1  = await fetch(url1);
+    const txt1  = await res1.text();
+    const json1 = JSON.parse(txt1.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const cols1 = json1.table.cols.map(c => c.label);
+    allSignals  = json1.table.rows.map(row => {
       const obj = {};
-      cols.forEach((col, i) => { obj[col] = row.c[i] ? (row.c[i].v || '') : ''; });
+      cols1.forEach((col, i) => { obj[col] = row.c[i] ? (row.c[i].v || '') : ''; });
       return parseRow(obj);
     }).filter(s => s.has_signal);
+
+    // Load Research Archive
+    try {
+      const url2  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(RAW_SHEET_NAME)}`;
+      const res2  = await fetch(url2);
+      const txt2  = await res2.text();
+      const json2 = JSON.parse(txt2.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+      const cols2 = json2.table.cols.map(c => c.label);
+      allRawArticles = json2.table.rows.map(row => {
+        const obj = {};
+        cols2.forEach((col, i) => { obj[col] = row.c[i] ? (row.c[i].v || '') : ''; });
+        return parseRawRow(obj);
+      });
+    } catch(e2) {
+      allRawArticles = [];
+    }
 
     usingLiveData = true;
     renderAll();
@@ -751,13 +918,153 @@ function parseRow(r) {
   };
 }
 
+function parseRawRow(r) {
+  return {
+    runDate:     r['Run Date']      || r.run_date      || '',
+    articleDate: r['Article Date']  || r.article_date  || '',
+    company:     r['Company']       || r.company       || '',
+    tier:        r['Tier']          || r.tier          || '',
+    category:    r['Category']      || r.category      || '',
+    region:      r['Region']        || r.region        || '',
+    title:       r['Title']         || r.title         || '',
+    summary:     r['Summary']       || r.summary       || '',
+    url:         r['URL']           || r.url           || '',
+    language:    r['Language']      || r.language      || '',
+  };
+}
+
+// ─────────────────────────────────────────────────────
+// VIEW SWITCHER
+// ─────────────────────────────────────────────────────
+function switchView(view) {
+  currentView = view;
+  document.getElementById('tab-signals').classList.toggle('active', view === 'signals');
+  document.getElementById('tab-archive').classList.toggle('active', view === 'archive');
+
+  const signalsEls = ['weekTabs', 'statsRow', document.querySelector('.search-row'), 'content'];
+  document.getElementById('weekTabs').style.display   = view === 'signals' ? '' : 'none';
+  document.getElementById('statsRow').style.display   = view === 'signals' ? '' : 'none';
+  document.getElementById('content').style.display    = view === 'signals' ? '' : 'none';
+  document.getElementById('archivePanel').style.display = view === 'archive' ? '' : 'none';
+
+  // Hide the main search row when in archive view (archive has its own)
+  const mainSearchRow = document.querySelector('.search-row');
+  if (mainSearchRow) mainSearchRow.style.display = view === 'signals' ? '' : 'none';
+
+  if (view === 'archive') {
+    archivePage = 1;
+    renderArchive();
+  }
+}
+
+// ─────────────────────────────────────────────────────
+// ARCHIVE RENDER
+// ─────────────────────────────────────────────────────
+function setArchiveSort(descVal, ascVal) {
+  const sel = document.getElementById('archiveSortSelect');
+  if (sel.value === descVal) {
+    sel.value = ascVal;
+  } else {
+    sel.value = descVal;
+  }
+  archivePage = 1;
+  renderArchive();
+}
+
+function renderArchive() {
+  const search  = (document.getElementById('archiveSearch').value || '').toLowerCase();
+  const sortVal = document.getElementById('archiveSortSelect').value;
+
+  let rows = allRawArticles.filter(function(r) {
+    if (!search) return true;
+    return (r.company + r.title + r.summary + r.region + r.tier).toLowerCase().includes(search);
+  });
+
+  // Sort
+  rows = rows.slice().sort(function(a, b) {
+    switch(sortVal) {
+      case 'article-date-asc':  return a.articleDate < b.articleDate ? -1 : 1;
+      case 'article-date-desc': return a.articleDate > b.articleDate ? -1 : 1;
+      case 'run-date-desc':     return a.runDate > b.runDate ? -1 : 1;
+      case 'company-asc':       return a.company.toLowerCase() < b.company.toLowerCase() ? -1 : 1;
+      default:                  return a.articleDate > b.articleDate ? -1 : 1;
+    }
+  });
+
+  const total   = rows.length;
+  const pages   = Math.ceil(total / ARCHIVE_PAGE_SIZE) || 1;
+  archivePage   = Math.min(archivePage, pages);
+  const start   = (archivePage - 1) * ARCHIVE_PAGE_SIZE;
+  const pageRows = rows.slice(start, start + ARCHIVE_PAGE_SIZE);
+
+  // Update sort indicators
+  ['date','run','company'].forEach(function(k) {
+    const el = document.getElementById('si-' + k);
+    if (el) { el.textContent = ''; }
+    const h = document.getElementById('ah-' + k);
+    if (h) h.classList.remove('sorted');
+  });
+  if (sortVal.includes('article-date')) {
+    const el = document.getElementById('si-date');
+    if (el) { el.textContent = sortVal === 'article-date-desc' ? '↓' : '↑'; }
+    const h = document.getElementById('ah-date');
+    if (h) h.classList.add('sorted');
+  } else if (sortVal === 'run-date-desc') {
+    const el = document.getElementById('si-run');
+    if (el) el.textContent = '↓';
+    const h = document.getElementById('ah-run');
+    if (h) h.classList.add('sorted');
+  } else if (sortVal.includes('company')) {
+    const el = document.getElementById('si-company');
+    if (el) el.textContent = sortVal === 'company-asc' ? '↑' : '↓';
+    const h = document.getElementById('ah-company');
+    if (h) h.classList.add('sorted');
+  }
+
+  // Build table rows
+  const tbody = document.getElementById('archiveTbody');
+  if (!tbody) return;
+
+  const tierClass = function(t) {
+    return t === 'Direct' ? 'tag-tier-direct' : t === 'Adjacent' ? 'tag-tier-adjacent' : 'tag-tier-ma';
+  };
+
+  tbody.innerHTML = pageRows.map(function(r) {
+    const shortUrl = r.url ? r.url.replace(/^https?:\/\//, '').substring(0, 30) + (r.url.length > 35 ? '…' : '') : '';
+    return `<tr>
+      <td class="cell-date">${escHtml(r.articleDate)}</td>
+      <td class="cell-date">${escHtml(r.runDate)}</td>
+      <td class="cell-company">${escHtml(r.company)}</td>
+      <td><span class="tag ${tierClass(r.tier)}" style="font-size:10px;">${escHtml(r.tier)}</span></td>
+      <td><span class="tag tag-region" style="font-size:10px;">${escHtml(r.region)}</span></td>
+      <td class="cell-title">${escHtml(r.title)}</td>
+      <td class="cell-summary">${escHtml(r.summary)}</td>
+      <td class="cell-url">${r.url ? `<a href="${escHtml(r.url)}" target="_blank" rel="noopener">${escHtml(shortUrl)}</a>` : ''}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('pageInfo').textContent    = 'Page ' + archivePage + ' of ' + pages;
+  document.getElementById('archiveCount').textContent = total + ' articles';
+  document.getElementById('prevPage').disabled        = archivePage <= 1;
+  document.getElementById('nextPage').disabled        = archivePage >= pages;
+}
+
+function changePage(dir) {
+  archivePage += dir;
+  renderArchive();
+}
+
 // ─────────────────────────────────────────────────────
 // RENDER
 // ─────────────────────────────────────────────────────
 function renderAll() {
   updateStats();
   buildWeekTabs();
-  applyFilters();
+  if (currentView === 'signals') {
+    applyFilters();
+  } else {
+    renderArchive();
+  }
 }
 
 function updateStats() {
