@@ -1,0 +1,43 @@
+name: Update Market Pulse Dashboard
+
+on:
+  schedule:
+    - cron: '0 17 * * 5'  # Every Friday 9am PT (17:00 UTC)
+  workflow_dispatch:        # Also allows manual trigger from GitHub UI
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Regenerate dashboard
+        env:
+          SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        run: python scripts/update_dashboard.py
+
+      - name: Commit and push updated dashboard
+        run: |
+          git config user.name "Market Pulse Bot"
+          git config user.email "action@github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "Auto-update dashboard $(date +'%Y-%m-%d')"
+          git push
+```
+
+---
+
+**Step 2 — Create the Python script**
+
+Create this file in your repo at:
+```
+scripts/update_dashboard.py
