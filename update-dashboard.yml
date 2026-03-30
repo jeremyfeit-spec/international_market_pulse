@@ -1,0 +1,32 @@
+name: Update Market Pulse Dashboard
+
+on:
+  push:
+    paths:
+      - 'data.json'       # Triggers whenever Apps Script pushes fresh data
+  workflow_dispatch:       # Also allows manual trigger from GitHub Actions tab
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run dashboard updater
+        run: python scripts/update_dashboard.py
+
+      - name: Commit and push updated dashboard
+        run: |
+          git config user.name "Market Pulse Bot"
+          git config user.email "market-pulse-bot@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet && echo "No changes to commit" || (
+            git commit -m "Auto-update dashboard $(date +'%Y-%m-%d')"
+            git push
+          )
