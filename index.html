@@ -1,1288 +1,994 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Market Pulse — Competitive Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0d0f11;
-    --surface: #14171a;
-    --surface2: #1c2026;
-    --border: #252a30;
-    --border2: #2e343c;
-    --text: #e8eaed;
-    --muted: #6b7280;
-    --subtle: #374151;
-    --accent: #3b82f6;
-    --accent-dim: rgba(59,130,246,0.12);
-    --green: #10b981;
-    --green-dim: rgba(16,185,129,0.12);
-    --amber: #f59e0b;
-    --amber-dim: rgba(245,158,11,0.12);
-    --red: #ef4444;
-    --red-dim: rgba(239,68,68,0.12);
-    --purple: #8b5cf6;
-    --purple-dim: rgba(139,92,246,0.12);
-    --mono: 'DM Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  /* ── TOP BAR ── */
-  .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(13,15,17,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    font-size: 15px;
-    white-space: nowrap;
-    letter-spacing: -0.01em;
-  }
-
-  .logo-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulse 2.5s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .badge-count {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 3px 8px;
-    border-radius: 4px;
-  }
-
-  .btn-refresh {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid rgba(59,130,246,0.3);
-    padding: 5px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-refresh:hover { background: rgba(59,130,246,0.2); }
-
-  /* ── LAYOUT ── */
-  .layout {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: calc(100vh - 56px);
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    border-right: 1px solid var(--border);
-    padding: 20px 0;
-    position: sticky;
-    top: 56px;
-    height: calc(100vh - 56px);
-    overflow-y: auto;
-  }
-
-  .sidebar-section {
-    margin-bottom: 28px;
-  }
-
-  .sidebar-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    padding: 0 16px;
-    margin-bottom: 8px;
-  }
-
-  .filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 7px 16px;
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-family: var(--sans);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.1s;
-    text-align: left;
-  }
-  .filter-btn:hover { color: var(--text); background: var(--surface); }
-  .filter-btn.active { color: var(--text); background: var(--surface2); }
-  .filter-btn.active .filter-dot { opacity: 1; }
-
-  .filter-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    opacity: 0.35;
-    flex-shrink: 0;
-  }
-
-  .filter-count {
-    margin-left: auto;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--subtle);
-  }
-
-  /* ── MAIN ── */
-  .main {
-    padding: 24px 28px;
-    max-width: 900px;
-  }
-
-  /* ── SEARCH ── */
-  .search-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 24px;
-    align-items: center;
-  }
-
-  .search-input {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 13px;
-    padding: 8px 12px 8px 34px;
-    outline: none;
-    transition: border-color 0.15s;
-    position: relative;
-  }
-  .search-input:focus { border-color: var(--accent); }
-
-  .search-wrap {
-    position: relative;
-    flex: 1;
-  }
-  .search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-size: 14px;
-    pointer-events: none;
-  }
-
-  .select-filter {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 8px 10px;
-    outline: none;
-    cursor: pointer;
-  }
-  .select-filter option { background: var(--surface2); }
-
-  /* ── WEEK TABS ── */
-  .week-tabs {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .week-tab {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 5px 12px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .week-tab:hover { border-color: var(--border2); color: var(--text); }
-  .week-tab.active {
-    background: var(--accent-dim);
-    border-color: rgba(59,130,246,0.4);
-    color: #93c5fd;
-  }
-  .week-tab .tab-count {
-    margin-left: 5px;
-    opacity: 0.6;
-    font-size: 10px;
-  }
-
-  /* ── VIEW TABS ── */
-  .view-tabs {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-  .view-tab {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 4px 12px;
-    border-radius: 4px;
-    border: 1px solid transparent;
-    background: none;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .view-tab:hover { color: var(--text); background: var(--surface); }
-  .view-tab.active {
-    color: var(--text);
-    background: var(--surface2);
-    border-color: var(--border);
-  }
-
-  /* ── ARCHIVE TABLE ── */
-  .archive-wrap {
-    overflow-x: auto;
-    margin-top: 4px;
-  }
-  .archive-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  .archive-table th {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: var(--muted);
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-    white-space: nowrap;
-    cursor: pointer;
-    user-select: none;
-  }
-  .archive-table th:hover { color: var(--text); }
-  .archive-table th .sort-ind { margin-left: 4px; opacity: 0.4; }
-  .archive-table th.sorted .sort-ind { opacity: 1; color: var(--accent); }
-  .archive-table td {
-    padding: 9px 12px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-    color: var(--text);
-    line-height: 1.5;
-  }
-  .archive-table tr:hover td { background: var(--surface); }
-  .archive-table .cell-date { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
-  .archive-table .cell-company { font-weight: 500; white-space: nowrap; }
-  .archive-table .cell-title { max-width: 280px; }
-  .archive-table .cell-summary { max-width: 320px; color: var(--muted); font-size: 11px; }
-  .archive-table .cell-url a { font-family: var(--mono); font-size: 10px; color: var(--accent); text-decoration: none; opacity: 0.7; }
-  .archive-table .cell-url a:hover { opacity: 1; }
-  .archive-pagination {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 16px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .page-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 4px 10px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .page-btn:hover { border-color: var(--border2); }
-  .page-btn:disabled { opacity: 0.3; cursor: default; }
-
-  /* ── SORT SELECT ── */
-  .sort-select-wrap {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-  }
-  .sort-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .sort-select {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 5px 8px;
-    outline: none;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .sort-select:focus { border-color: var(--accent); }
-  .sort-select option { background: var(--surface2); }
-
-  /* ── WEEK SECTION ── */
-  .week-section {
-    margin-bottom: 32px;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .week-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .week-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  .week-count {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--subtle);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 2px 7px;
-    border-radius: 3px;
-    margin-left: auto;
-  }
-
-  /* ── SIGNAL CARD ── */
-  .signal-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    transition: border-color 0.15s;
-    cursor: default;
-  }
-  .signal-card:hover { border-color: var(--border2); }
-  .signal-card.high { border-left: 2px solid var(--accent); }
-  .signal-card.hidden { display: none; }
-
-  .card-top {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-
-  .company-link {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text);
-    text-decoration: none;
-    letter-spacing: -0.01em;
-  }
-  .company-link:hover { color: var(--accent); }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-left: auto;
-    flex-shrink: 0;
-  }
-
-  .tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 3px;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-  }
-
-  .tag-tier-direct    { background: var(--red-dim);    color: #fca5a5; }
-  .tag-tier-adjacent  { background: var(--green-dim);  color: #6ee7b7; }
-  .tag-tier-ma        { background: var(--amber-dim);  color: #fcd34d; }
-  .tag-type           { background: var(--surface2);   color: var(--muted); border: 1px solid var(--border); }
-  .tag-high           { background: var(--accent-dim); color: #93c5fd; }
-  .tag-region         { background: var(--purple-dim); color: #c4b5fd; }
-
-  .card-headline {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 5px;
-    line-height: 1.4;
-  }
-
-  .card-summary {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 8px;
-  }
-
-  .card-sources {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .source-link {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--accent);
-    text-decoration: none;
-    opacity: 0.7;
-    transition: opacity 0.1s;
-  }
-  .source-link:hover { opacity: 1; }
-
-  .source-sep {
-    color: var(--subtle);
-    font-size: 10px;
-  }
-
-  /* ── EMPTY STATE ── */
-  .empty {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--muted);
-  }
-  .empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
-  .empty-text { font-size: 13px; }
-
-  /* ── STATS ROW ── */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-
-  .stat-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 12px 14px;
-  }
-
-  .stat-num {
-    font-family: var(--mono);
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  /* ── LOADING ── */
-  .loading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 40px 0;
-  }
-
-  .spinner {
-    width: 16px; height: 16px;
-    border: 2px solid var(--border2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── FEEDBACK BOX ── */
-  .feedback-section {
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-  }
-
-  .feedback-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  .feedback-textarea {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 13px;
-    padding: 10px 12px;
-    outline: none;
-    resize: vertical;
-    min-height: 80px;
-    transition: border-color 0.15s;
-  }
-  .feedback-textarea:focus { border-color: var(--accent); }
-  .feedback-textarea::placeholder { color: var(--subtle); }
-
-  .feedback-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    align-items: center;
-  }
-
-  .btn-submit {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid rgba(59,130,246,0.3);
-    padding: 6px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-submit:hover { background: rgba(59,130,246,0.2); }
-
-  .feedback-hint {
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .feedback-saved {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green);
-    display: none;
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
-
-  @media (max-width: 700px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .stats-row { grid-template-columns: repeat(2,1fr); }
-  }
-</style>
-</head>
-<body>
-
-<div class="topbar">
-  <div class="logo">
-    <div class="logo-dot"></div>
-    Market Pulse
-  </div>
-  <div class="view-tabs">
-    <button class="view-tab active" id="tab-signals" onclick="switchView('signals')">Signals</button>
-    <button class="view-tab" id="tab-archive" onclick="switchView('archive')">Research Archive</button>
-  </div>
-  <div class="topbar-right">
-    <span class="badge-count" id="totalBadge">— signals</span>
-    <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
-  </div>
-</div>
-
-<div class="layout">
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Tier</div>
-      <button class="filter-btn active" data-filter="tier" data-value="all" onclick="setFilter('tier','all',this)">
-        <span class="filter-dot" style="background:var(--muted)"></span>All tiers
-        <span class="filter-count" id="count-tier-all"></span>
-      </button>
-      <button class="filter-btn" data-filter="tier" data-value="Direct" onclick="setFilter('tier','Direct',this)">
-        <span class="filter-dot" style="background:var(--red)"></span>Direct
-        <span class="filter-count" id="count-tier-Direct"></span>
-      </button>
-      <button class="filter-btn" data-filter="tier" data-value="Adjacent" onclick="setFilter('tier','Adjacent',this)">
-        <span class="filter-dot" style="background:var(--green)"></span>Adjacent
-        <span class="filter-count" id="count-tier-Adjacent"></span>
-      </button>
-      <button class="filter-btn" data-filter="tier" data-value="M&A Watch" onclick="setFilter('tier','M&A Watch',this)">
-        <span class="filter-dot" style="background:var(--amber)"></span>M&A Watch
-        <span class="filter-count" id="count-tier-ma"></span>
-      </button>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-label">Signal type</div>
-      <button class="filter-btn active" data-filter="type" data-value="all" onclick="setFilter('type','all',this)">
-        <span class="filter-dot" style="background:var(--muted)"></span>All types
-      </button>
-      <button class="filter-btn" data-filter="type" data-value="Funding" onclick="setFilter('type','Funding',this)">
-        <span class="filter-dot" style="background:#34d399"></span>Funding
-      </button>
-      <button class="filter-btn" data-filter="type" data-value="Product" onclick="setFilter('type','Product',this)">
-        <span class="filter-dot" style="background:#60a5fa"></span>Product
-      </button>
-      <button class="filter-btn" data-filter="type" data-value="Strategy" onclick="setFilter('type','Strategy',this)">
-        <span class="filter-dot" style="background:#a78bfa"></span>Strategy
-      </button>
-      <button class="filter-btn" data-filter="type" data-value="Regulatory" onclick="setFilter('type','Regulatory',this)">
-        <span class="filter-dot" style="background:#fb923c"></span>Regulatory
-      </button>
-      <button class="filter-btn" data-filter="type" data-value="Pricing" onclick="setFilter('type','Pricing',this)">
-        <span class="filter-dot" style="background:#f472b6"></span>Pricing
-      </button>
-      <button class="filter-btn" data-filter="type" data-value="Hiring" onclick="setFilter('type','Hiring',this)">
-        <span class="filter-dot" style="background:#facc15"></span>Hiring
-      </button>
-      <button class="filter-btn" data-filter="type" data-value="M&A Signal" onclick="setFilter('type','M&A Signal',this)">
-        <span class="filter-dot" style="background:#f87171"></span>M&A Signal
-      </button>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-label">Importance</div>
-      <button class="filter-btn active" data-filter="importance" data-value="all" onclick="setFilter('importance','all',this)">
-        <span class="filter-dot" style="background:var(--muted)"></span>All
-      </button>
-      <button class="filter-btn" data-filter="importance" data-value="High" onclick="setFilter('importance','High',this)">
-        <span class="filter-dot" style="background:var(--accent)"></span>High only
-      </button>
-    </div>
-  </aside>
-
-  <main class="main">
-
-    <div class="stats-row" id="statsRow"></div>
-
-    <div id="weekTabs" class="week-tabs"></div>
-
-    <div class="search-row">
-      <div class="search-wrap">
-        <span class="search-icon">⌕</span>
-        <input class="search-input" type="text" placeholder="Search companies, signals, summaries…" id="searchInput" oninput="applyFilters()">
-      </div>
-      <div class="sort-select-wrap">
-        <span class="sort-label">Sort</span>
-        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
-          <option value="date-desc">Date ↓ newest</option>
-          <option value="date-asc">Date ↑ oldest</option>
-          <option value="company-asc">Company A → Z</option>
-          <option value="company-desc">Company Z → A</option>
-          <option value="importance-desc">Importance ↓</option>
-        </select>
-      </div>
-    </div>
-
-    <div id="content"></div>
-
-    <!-- ── RESEARCH ARCHIVE PANEL ── -->
-    <div id="archivePanel" style="display:none;">
-      <div class="search-row">
-        <div class="search-wrap">
-          <span class="search-icon">⌕</span>
-          <input class="search-input" type="text" placeholder="Search titles, companies, summaries…" id="archiveSearch" oninput="renderArchive()">
-        </div>
-        <div class="sort-select-wrap">
-          <span class="sort-label">Sort</span>
-          <select class="sort-select" id="archiveSortSelect" onchange="renderArchive()">
-            <option value="article-date-desc">Article date ↓ newest</option>
-            <option value="article-date-asc">Article date ↑ oldest</option>
-            <option value="run-date-desc">Run date ↓ newest</option>
-            <option value="company-asc">Company A → Z</option>
-          </select>
-        </div>
-      </div>
-      <div class="archive-wrap">
-        <table class="archive-table" id="archiveTable">
-          <thead>
-            <tr>
-              <th onclick="setArchiveSort('article-date-desc','article-date-asc')" id="ah-date">Article date<span class="sort-ind" id="si-date">↓</span></th>
-              <th onclick="setArchiveSort('run-date-desc','run-date-desc')" id="ah-run">Run date<span class="sort-ind" id="si-run"></span></th>
-              <th onclick="setArchiveSort('company-asc','company-desc')" id="ah-company">Company<span class="sort-ind" id="si-company"></span></th>
-              <th>Tier</th>
-              <th>Region</th>
-              <th>Title</th>
-              <th>Summary</th>
-              <th>Source</th>
-            </tr>
-          </thead>
-          <tbody id="archiveTbody"></tbody>
-        </table>
-      </div>
-      <div class="archive-pagination">
-        <button class="page-btn" id="prevPage" onclick="changePage(-1)">← Prev</button>
-        <span id="pageInfo">Page 1</span>
-        <button class="page-btn" id="nextPage" onclick="changePage(1)">Next →</button>
-        <span id="archiveCount"></span>
-      </div>
-    </div>
-
-    <div class="feedback-section">
-      <div class="feedback-label">Feedback for next digest</div>
-      <textarea class="feedback-textarea" id="feedbackText" placeholder="e.g. Include more EU e-invoicing regulatory updates · Less focus on US-only companies · Always include Pennylane and Xero · Add Brazil LatAm signals…"></textarea>
-      <div class="feedback-row">
-        <button class="btn-submit" onclick="saveFeedback()">Save feedback</button>
-        <span class="feedback-hint">Saved locally — copy into your Apps Script prompt to apply next Friday</span>
-        <span class="feedback-saved" id="feedbackSaved">✓ Saved</span>
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<script>
-// ─────────────────────────────────────────────────────
-// CONFIG — replace with your actual Google Sheet details
-// Sheet must be published: File → Share → Publish to web
-// ─────────────────────────────────────────────────────
-const SHEET_ID          = 'YOUR_GOOGLE_SHEET_ID_HERE';
-const SHEET_NAME        = 'Signals Log';
-const RAW_SHEET_NAME    = 'Research Archive';
-
-// ─────────────────────────────────────────────────────
-// SAMPLE DATA — used when sheet is not yet connected
-// Replace with real data once sheet is live
-// ─────────────────────────────────────────────────────
-const SAMPLE_DATA = [
-  // ── Week of 23–29 Mar 2026 ──
-  { date:'2026-03-29', company:'Avalara', website:'https://avalara.com', tier:'Adjacent', region:'US/Global', signal_type:'Product', importance:'High', headline:'NEXT 2026 event: Returns Agent launched, Xero AI certification demoed live', summary:'Avalara ran its NEXT 2026 virtual event on 26 March, launching the Returns Agent — its first fully autonomous global filing product. AI-infused tax certification with Xero was demoed for UK, AU and NZ markets. New Developer Portal with agentic API architecture unveiled. Marks Avalara\'s clearest shift from compliance software to always-on agentic compliance infrastructure.', source_urls:'https://www.avalara.com/blog/en/north-america/2026/03/avalara-next-2026-building-the-future-of-agentic-tax-and-compliance.html\nhttps://newsroom.avalara.com/2026-03-12-Registration-Open-for-Avalara-NEXT-2026-Exploring-the-Future-of-Agentic-Tax-and-Compliance\nhttps://www.prnewswire.com/news-releases/registration-open-for-avalara-next-2026-exploring-the-future-of-agentic-tax-and-compliance-302711817.html' },
-  { date:'2026-03-29', company:'Vic.ai', website:'https://vic.ai', tier:'Direct', region:'US/Global', signal_type:'Strategy', importance:'High', headline:'Positioned as platform of choice for PE-backed portfolio companies globally', summary:'Vic.ai announced significant momentum among private equity-backed portfolio companies on 24 March, positioning as the go-to AP automation platform for PE sponsors and portfolio CFOs. Sectors include manufacturing, logistics, construction, and hospitality. A deliberate enterprise-upmarket push using private equity as a distribution channel.', source_urls:'https://www.globenewswire.com/news-release/2026/03/24/3261027/0/en/Vic-ai-Emerges-as-the-Platform-of-Choice-for-Private-Equity-Backed-Companies-Focused-on-Cash-Flow-Efficiency-and-Scalable-Growth.html' },
-  { date:'2026-03-29', company:'Cleavr', website:'https://cleavr.io', tier:'M&A Watch', region:'EU-France', signal_type:'Funding', importance:'High', headline:'€1M pre-seed raised to automate accounts receivable cycle with AI across Europe', summary:'Paris-based Cleavr raised €1M pre-seed from Kima Ventures and angels including the CFO of Pennylane. Automates 80% of the AR cycle — reminders, reconciliation, disputes, legal collections, payment matching. 37% DSO reduction claimed within first weeks. ~50 clients. EU rollout from 2026. France\'s September 2026 e-invoicing mandate is a direct structural tailwind. Early-stage M&A candidate as AR automation consolidates across Europe.', source_urls:'https://www.eu-startups.com/2026/03/french-startup-cleavr-raises-e1-million-to-automate-accounts-receivable-workflows-with-ai/\nhttps://tech.eu/2026/03/19/cleavr-raises-eur1m-to-develop-an-ai-solution-for-accounts-receivable/\nhttps://www.finextra.com/pressarticle/109231/fintech-startup-cleavr-raises-1-million-to-deploy-ai-for-accounts-receivable' },
-  // ── Week of 14–20 Mar 2026 ──
-  { date:'2026-03-20', company:'Silverfin (Visma)', website:'https://silverfin.com', tier:'Direct', region:'EU-Belgium', signal_type:'Strategy', importance:'High', headline:'New CEO An Maes appointed to accelerate expansion into UK and EU markets', summary:'Silverfin appointed An Maes as CEO with a mandate to push into UK, Netherlands, Luxembourg and Denmark. She previously led all international growth outside Belgium. Silverfin already serves 90% of large Belgian firms and 30 of the UK top 100. An offensive move into new European markets backed by Visma.', source_urls:'https://www.coffeefranchisehub.com/archives/42480' },
-  { date:'2026-03-20', company:'Pennylane', website:'https://pennylane.com', tier:'Direct', region:'EU-France', signal_type:'Funding', importance:'High', headline:'€175M Series E closed at €4.25B valuation; Poland, Spain, Belgium expansion confirmed', summary:'Pennylane closed a €175M Series E led by TCV and Blackstone. Capital deployed into Germany localisation, AI co-pilot for accountants, and e-invoicing infrastructure. Plans confirmed for Poland, Spain and Belgium. Goal: become the reference accounting OS for continental Europe.', source_urls:'https://eu-startups.com/2026/01/sequoia-backed-french-accounting-unicorn-pennylane-secures-e175-million-as-it-approaches-profitability/\nhttps://tech.eu/2026/01/20/french-accounting-software-platform-pennylane-raises-200m/\nhttps://siliconangle.com/2026/01/20/accounting-software-startup-pennylane-raises-204m-reported-4-25b-valuation/' },
-  { date:'2026-03-20', company:'Vic.ai', website:'https://vic.ai', tier:'Direct', region:'EU-Nordics', signal_type:'Product', importance:'High', headline:'VicInbox launched in Microsoft 365 Outlook marketplace globally', summary:'Vic.ai launched VicInbox into the Microsoft Outlook marketplace, putting autonomous AP directly inside enterprise email workflows. Expanded AP Autopilot and self-service ACH payment automation also shipped in Q1 2026.', source_urls:'https://www.vic.ai/blog/q1-2026-product-release-expanding-autonomy-across-the-ap-lifecycle' },
-  { date:'2026-03-20', company:'Xero', website:'https://xero.com', tier:'Direct', region:'APAC-ANZ', signal_type:'Pricing', importance:'Medium', headline:'New tiered API pricing went live 2 March — backlash from AU and UK partners', summary:'Xero retired its revenue share model for a five-tier API pricing system ($0–$1,445/mo). Significant backlash from Australian and UK accounting partner ecosystem. Xerocon London confirmed 8–9 July.', source_urls:'https://www.accountantsdaily.com.au/technology/21986-all-you-can-eat-xero-data-buffet-comes-to-abrupt-end\nhttps://blog.xero.com/' },
-  { date:'2026-03-20', company:'Xero', website:'https://xero.com', tier:'Direct', region:'APAC-ANZ', signal_type:'Strategy', importance:'Medium', headline:'International revenue up 24% YoY; UK strongest market at 25% growth', summary:'H1 FY26 results show international revenue of $530M (+24% YoY). UK is Xero\'s strongest international market. Melio acquisition expected to push pro-forma US revenue to $241M (+53% YoY).', source_urls:'https://www.investing.com/news/company-news/xero-h1-fy26-presentation-slides-20-revenue-growth-amid-melio-acquisition-93CH-4397685' },
-  { date:'2026-03-20', company:'Payhawk', website:'https://payhawk.com', tier:'Adjacent', region:'UK', signal_type:'Funding', importance:'High', headline:'$100M raise reported at ~$2B valuation to counter Brex EU entry', summary:'Payhawk is reportedly raising $100M at ~$2B valuation. Built around an agentic AI model for autonomous finance tasks. The raise is a direct response to Brex entering Europe with a newly secured EU licence. If closes, EU spend management consolidation accelerates.', source_urls:'https://techfundingnews.com/payhawk-to-raise-100m-at-2b-valuation-to-achieve-60-faster-workflows-with-ai-agents/\nhttps://www.bloomberg.com/news/articles/2026-01-07/fintech-payhawk-seeks-2-billion-valuation-in-new-funding-round' },
-  { date:'2026-03-20', company:'Pleo', website:'https://pleo.io', tier:'Adjacent', region:'EU-Nordics', signal_type:'Product', importance:'Medium', headline:'Cash Management suite live in UK and Germany; revenue up 56% YoY', summary:'Pleo launched its Cash Management suite in UK and Germany, expanding into multi-currency treasury management. Revenue estimated at $59M in 2024, up 56% YoY across 40,000+ European customers. Adding AP automation and AI fraud detection via Taktile.', source_urls:'https://sacra.com/c/pleo/' },
-  { date:'2026-03-20', company:'Spendesk', website:'https://spendesk.com', tier:'Adjacent', region:'EU-France', signal_type:'Strategy', importance:'Medium', headline:'Reached profitability; launched regulated financial services', summary:'Spendesk reached profitability and launched regulated financial services, doubling spend under management. Moving upmarket toward enterprise with multi-entity support and embedded AI capabilities via strategic partnerships.', source_urls:'https://sacra.com/c/pleo/' },
-  { date:'2026-03-20', company:'Avalara', website:'https://avalara.com', tier:'Adjacent', region:'US/Global', signal_type:'M&A Signal', importance:'High', headline:'Acquired Versori — agentic AI integration platform — to scale global compliance infrastructure', summary:'Avalara acquired Versori (Manchester, UK) on 2 March — an agentic AI connector platform enabling faster deployment across ERPs, marketplaces, and financial apps. Full team joining Avalara. Operating as "Versori, by Avalara." Directly accelerates Avalara\'s push to embed real-time compliance into every ERP and marketplace at global scale.', source_urls:'https://newsroom.avalara.com/2026-03-02-Avalara-Acquires-Versori-to-Accelerate-AI-Native,-Enterprise-Grade-Integration-at-Global-Scale\nhttps://www.prnewswire.com/news-releases/avalara-acquires-versori-to-accelerate-ai-native-enterprise-grade-integration-at-global-scale-302700701.html' },
-  { date:'2026-03-20', company:'Sovos', website:'https://sovos.com', tier:'Adjacent', region:'US/Global', signal_type:'Regulatory', importance:'Medium', headline:'France 2026 Budget Law confirmed: B2B e-invoicing mandate locked from Sep 2026', summary:'France formally adopted its 2026 Budget Law on 2 February, confirming B2B e-invoicing from September 2026. Penalties set at €50/invoice. Non-established entities reprieved to September 2027. The mandate structure is now legally settled.', source_urls:'https://sovos.com/regulatory-updates/vat/france-approves-2026-budget-law-confirming-key-amendments-to-the-e-invoicing-and-e-reporting-mandate/' },
-  { date:'2026-03-20', company:'Qive / Arquivei', website:'https://qive.com.br', tier:'M&A Watch', region:'LatAm-Brazil', signal_type:'Regulatory', importance:'Medium', headline:'Brazil 2026 tax reform: biggest fiscal compliance overhaul in 20 years', summary:'Brazil\'s dual VAT reform (CBS + IBS) is live from 2026, replacing multiple existing taxes. New mandatory NF-e/NFC-e invoice layouts active from 1 January. National NFS-e now mandatory across all municipalities. São Paulo abolished its SAT fiscal device. Directly expands the addressable market for Qive\'s SEFAZ compliance platform.', source_urls:'https://www.fonoa.com/resources/blog/brazil-tax-reform-e-invoicing-2026\nhttps://www.fiscal-requirements.com/news/4809\nhttps://www.vatcalc.com/brazil/brazil-nota-fiscal-eletronica-e-invoicing-update/' },
-];
-
-// ─────────────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────────────
-let allSignals    = [];
-let allRawArticles = [];
-let filters       = { tier: 'all', type: 'all', importance: 'all' };
-let activeWeek    = 'all';
-let currentView   = 'signals';
-let archivePage   = 1;
-const ARCHIVE_PAGE_SIZE = 50;
-let usingLiveData = false;
-
-const SAMPLE_RAW = [
-  // ── Week of 23–29 Mar 2026 ──
-  { 'Run Date':'2026-03-29','Article Date':'2026-03-26','Company':'Avalara','Tier':'Adjacent','Category':'Broad Global Tax (VAT + Sales Tax)','Region':'US/Global','Title':'Avalara NEXT 2026: Building the future of agentic tax and compliance','Summary':'Avalara NEXT 2026 virtual event ran on March 26, launching the Returns Agent for global filing automation and demoing AI-infused certification with Xero for UK, AU and NZ markets. New Developer Portal unveiled.','URL':'https://www.avalara.com/blog/en/north-america/2026/03/avalara-next-2026-building-the-future-of-agentic-tax-and-compliance.html','Language':'English' },
-  { 'Run Date':'2026-03-29','Article Date':'2026-03-26','Company':'Avalara','Tier':'Adjacent','Category':'Broad Global Tax (VAT + Sales Tax)','Region':'US/Global','Title':'Registration Open for Avalara NEXT 2026: Exploring the Future of Agentic Tax and Compliance','Summary':'Avalara announced programming for NEXT 2026 including the Returns Agent launch, AI-infused Xero certification, and Versori agentic integration session. Theme: Automation to Autonomy.','URL':'https://newsroom.avalara.com/2026-03-12-Registration-Open-for-Avalara-NEXT-2026-Exploring-the-Future-of-Agentic-Tax-and-Compliance','Language':'English' },
-  { 'Run Date':'2026-03-29','Article Date':'2026-03-24','Company':'Vic.ai','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'US/Global','Title':'Vic.ai Emerges as the Platform of Choice for Private Equity–Backed Companies','Summary':'Vic.ai announced significant momentum among PE-backed portfolio companies, positioning as the go-to AP automation platform for PE sponsors and portfolio CFOs across manufacturing, logistics, construction, and hospitality.','URL':'https://www.globenewswire.com/news-release/2026/03/24/3261027/0/en/Vic-ai-Emerges-as-the-Platform-of-Choice-for-Private-Equity-Backed-Companies-Focused-on-Cash-Flow-Efficiency-and-Scalable-Growth.html','Language':'English' },
-  { 'Run Date':'2026-03-29','Article Date':'2026-03-19','Company':'Cleavr','Tier':'M&A Watch','Category':'Services / Outsourced Tax & Accounting','Region':'EU-France','Title':'French startup Cleavr raises €1 million to automate accounts receivable workflows with AI','Summary':'Paris-based Cleavr raised €1M pre-seed from Kima Ventures and angels including the CFO of Pennylane to automate the full AR cycle — reminders, reconciliation, disputes, legal collections, payment matching. 37% DSO reduction claimed.','URL':'https://www.eu-startups.com/2026/03/french-startup-cleavr-raises-e1-million-to-automate-accounts-receivable-workflows-with-ai/','Language':'English' },
-  { 'Run Date':'2026-03-29','Article Date':'2026-03-19','Company':'Cleavr','Tier':'M&A Watch','Category':'Services / Outsourced Tax & Accounting','Region':'EU-France','Title':'Cleavr raises €1M to develop an AI solution for accounts receivable','Summary':'Paris-based company develops an AI solution to automate accounts receivable processes, helping businesses improve cash flow and reduce payment delays while planning expansion into broader European markets.','URL':'https://tech.eu/2026/03/19/cleavr-raises-eur1m-to-develop-an-ai-solution-for-accounts-receivable/','Language':'English' },
-  { 'Run Date':'2026-03-29','Article Date':'2026-03-19','Company':'Cleavr','Tier':'M&A Watch','Category':'Services / Outsourced Tax & Accounting','Region':'EU-France','Title':'Fintech startup Cleavr raises €1 million to deploy AI for accounts receivable','Summary':'Cleavr provides a concrete response to France\'s late-payment crisis by deploying an AI collaborator capable of assisting finance teams across the entire collection cycle. Clients see 37% DSO reduction.','URL':'https://www.finextra.com/pressarticle/109231/fintech-startup-cleavr-raises-1-million-to-deploy-ai-for-accounts-receivable','Language':'English' },
-  // ── Week of 14–20 Mar 2026 ──
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-19','Company':'Pennylane','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'EU-France','Title':'Pennylane raises €175M Series E at €4.25B valuation','Summary':'French accounting startup Pennylane has raised €175M led by TCV and Blackstone to accelerate its European expansion and AI development.','URL':'https://eu-startups.com/2026/01/sequoia-backed-french-accounting-unicorn-pennylane-secures-e175-million-as-it-approaches-profitability/','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-18','Company':'Silverfin (Visma)','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'EU-Belgium','Title':'Silverfin appoints An Maes as CEO to accelerate European expansion','Summary':'Cloud accounting platform Silverfin has named An Maes as its new CEO effective 1 March 2026, with a mandate to grow in the UK, Netherlands, Luxembourg and Denmark.','URL':'https://www.coffeefranchisehub.com/archives/42480','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-17','Company':'Vic.ai','Tier':'Direct','Category':'AI-Native ERP / Accounting (Non-US)','Region':'EU-Nordics','Title':'Vic.ai Q1 2026 Product Release: Expanded AP Autonomy & Smarter Payments','Summary':'Vic.ai has launched VicInbox into the Microsoft 365 Outlook marketplace and expanded its AP Autopilot coverage for enterprise finance teams globally.','URL':'https://www.vic.ai/blog/q1-2026-product-release-expanding-autonomy-across-the-ap-lifecycle','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-16','Company':'Xero','Tier':'Direct','Category':'Core Accounting / FMS (Global SMB)','Region':'APAC-ANZ','Title':'All you can eat Xero data buffet comes to abrupt end','Summary':'Xero has retired its revenue share model replacing it with a five-tier API pricing system based on connections and data egress volume, drawing backlash from Australian and UK partners.','URL':'https://www.accountantsdaily.com.au/technology/21986-all-you-can-eat-xero-data-buffet-comes-to-abrupt-end','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-15','Company':'Payhawk','Tier':'Adjacent','Category':'Spend Management / Corporate Cards','Region':'UK','Title':'Payhawk eyes $100M raise at $2B valuation to counter Brex EU entry','Summary':'Payhawk is reportedly raising $100M at ~$2B valuation, driven by its agentic AI model and a direct response to Brex securing an EU licence.','URL':'https://techfundingnews.com/payhawk-to-raise-100m-at-2b-valuation-to-achieve-60-faster-workflows-with-ai-agents/','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-15','Company':'Avalara','Tier':'Adjacent','Category':'Broad Global Tax (VAT + Sales Tax)','Region':'US/Global','Title':'Avalara acquires Versori to accelerate AI-native enterprise integration at global scale','Summary':'Avalara acquired Versori (Manchester, UK), an agentic AI integration platform enabling faster connector deployment across ERPs, e-commerce, and financial apps. Full team joining Avalara.','URL':'https://newsroom.avalara.com/2026-03-02-Avalara-Acquires-Versori-to-Accelerate-AI-Native,-Enterprise-Grade-Integration-at-Global-Scale','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-14','Company':'Sovos','Tier':'Adjacent','Category':'Broad Global Tax (VAT + Sales Tax)','Region':'US/Global','Title':'France Approves 2026 Budget Law Confirming E-Invoicing Mandate','Summary':'France has formally adopted its 2026 State Budget Law confirming the B2B e-invoicing mandate timeline from September 2026 with penalties of €50 per invoice.','URL':'https://sovos.com/regulatory-updates/vat/france-approves-2026-budget-law-confirming-key-amendments-to-the-e-invoicing-and-e-reporting-mandate/','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-14','Company':'Qive / Arquivei','Tier':'M&A Watch','Category':'Latin America Fiscal Compliance','Region':'LatAm-Brazil','Title':'Brazil 2026 Tax Reform: Key E-Invoicing Changes for Businesses','Summary':'Brazil tax reform introduces CBS, IBS and major e-invoicing updates including mandatory new NF-e layouts and the National NFS-e system now mandatory across all municipalities.','URL':'https://www.fonoa.com/resources/blog/brazil-tax-reform-e-invoicing-2026','Language':'English' },
-  { 'Run Date':'2026-03-20','Article Date':'2026-03-13','Company':'Pleo','Tier':'Adjacent','Category':'Spend Management / Corporate Cards','Region':'EU-Nordics','Title':'Pleo launches Cash Management suite in UK and Germany','Summary':'Pleo has rolled out its Cash Management suite to UK and German customers offering real-time multi-currency account visibility with revenue estimated at $59M in 2024 up 56% YoY.','URL':'https://sacra.com/c/pleo/','Language':'English' },
-];
-
-// ─────────────────────────────────────────────────────
-// LOAD DATA
-// ─────────────────────────────────────────────────────
-async function loadData() {
-  if (SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE') {
-    allSignals     = SAMPLE_DATA.map(parseRow);
-    allRawArticles = SAMPLE_RAW.map(parseRawRow);
-    renderAll();
+// ============================================================
+// MARKET PULSE — Google Apps Script v3
+// Full non-US regional coverage — 82 competitors across
+// EU, UK, APAC, LatAm, Middle East, Africa
+// ============================================================
+// SETUP (run once in order):
+//   1. Paste this file into Extensions → Apps Script
+//   2. Fill in CONFIG below (Claude API key + Slack webhook)
+//   3. Run setupSheet()
+//   4. Run createTrigger()
+//   5. Test with testSingleCompetitor()
+// ============================================================
+
+// ─────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────
+const CONFIG = {
+  CLAUDE_API_KEY:      'YOUR_CLAUDE_API_KEY_HERE',
+  SLACK_WEBHOOK_URL:   'YOUR_SLACK_WEBHOOK_URL_HERE',
+  DASHBOARD_URL:       'https://jeremyfeit-spec.github.io/international_market_pulse/',
+  GITHUB_TOKEN:        'YOUR_GITHUB_TOKEN_HERE',      // github.com/settings/tokens → Fine-grained → Contents: Read & Write
+  GITHUB_REPO:         'jeremyfeit-spec/international_market_pulse',
+  COMPETITOR_SHEET:    'Full Competitor List',
+  SIGNALS_SHEET:       'Signals Log',
+  RAW_ARTICLES_SHEET:  'Research Archive',
+  WEEKS_TO_KEEP:       12,
+  MAX_SIGNALS_SLACK:   12,
+};
+
+// ─────────────────────────────────────────
+// COLUMN INDEXES (0-based)
+// ─────────────────────────────────────────
+const COL = {
+  NAME:       0,  // A
+  CATEGORY:   1,  // B  — top level: Core accounting / Spend management etc.
+  CATEGORY2:  2,  // C  — detailed sub-category
+  REGION:     3,  // D
+  REGION_DET: 4,  // E
+  JTBD:       5,  // F
+  NOTES:      6,  // G
+  ALERTS_RSS: 7,  // H  — added by setupSheet()
+  WEBSITE:    8,  // I  — added by setupSheet(), company homepage URL
+};
+
+// ─────────────────────────────────────────
+// TIER MAPPING (top-level category → digest section)
+// ─────────────────────────────────────────
+const TIER_MAP = {
+  'Direct':    ['Core accounting'],
+  'Adjacent':  ['Spend management & AP automation', 'E-Invoicing and/or tax'],
+  'M&A Watch': ['Other compliance or specific tax', 'Other compliance'],
+};
+
+// ─────────────────────────────────────────
+// REGIONAL RSS CONFIG
+// Maps region keywords → { bucket, language, rssTemplates[] }
+// {NAME} is replaced with the encoded company name at runtime
+// Two feeds per region = English + local language where relevant
+// ─────────────────────────────────────────
+const REGION_CONFIG = {
+  'France': {
+    bucket: 'EU-France', language: 'French/English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=fr&gl=FR&ceid=FR:fr',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=FR&ceid=FR:en',
+    ]
+  },
+  'Denmark': {
+    bucket: 'EU-Nordics', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=DK&ceid=DK:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=SE&ceid=SE:en',  // Sifted/Nordic coverage
+    ]
+  },
+  'Sweden': {
+    bucket: 'EU-Nordics', language: 'English/Swedish',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=SE&ceid=SE:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=sv&gl=SE&ceid=SE:sv',
+    ]
+  },
+  'Norway': {
+    bucket: 'EU-Nordics', language: 'English/Norwegian',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=NO&ceid=NO:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=US&ceid=US:en',  // + US tech press
+    ]
+  },
+  'Belgium': {
+    bucket: 'EU-Belgium', language: 'English/French/Dutch',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=BE&ceid=BE:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=fr&gl=BE&ceid=BE:fr',
+    ]
+  },
+  'Netherlands': {
+    bucket: 'EU-Netherlands', language: 'English/Dutch',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=NL&ceid=NL:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=nl&gl=NL&ceid=NL:nl',
+    ]
+  },
+  'Germany': {
+    bucket: 'EU-Germany', language: 'English/German',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=DE&ceid=DE:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=de&gl=DE&ceid=DE:de',
+    ]
+  },
+  'Spain': {
+    bucket: 'EU-Spain', language: 'English/Spanish',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=ES&ceid=ES:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=es&gl=ES&ceid=ES:es',
+    ]
+  },
+  'UK': {
+    bucket: 'UK', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=GB&ceid=GB:en',
+    ]
+  },
+  'Ireland': {
+    bucket: 'UK-Ireland', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=IE&ceid=IE:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=GB&ceid=GB:en',
+    ]
+  },
+  'Slovakia': {
+    bucket: 'EU-CEE', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=SK&ceid=SK:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=GB&ceid=GB:en',
+    ]
+  },
+  'Israel': {
+    bucket: 'Middle East', language: 'English/Hebrew',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=IL&ceid=IL:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=US&ceid=US:en',
+    ]
+  },
+  'Saudi Arabia': {
+    bucket: 'Middle East-GCC', language: 'English/Arabic',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=SA&ceid=SA:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=ar&gl=SA&ceid=SA:ar',
+    ]
+  },
+  'UAE': {
+    bucket: 'Middle East-GCC', language: 'English/Arabic',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=AE&ceid=AE:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=ar&gl=AE&ceid=AE:ar',
+    ]
+  },
+  'India': {
+    bucket: 'APAC-India', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=IN&ceid=IN:en',
+    ]
+  },
+  'Singapore': {
+    bucket: 'APAC-SEA', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=SG&ceid=SG:en',
+    ]
+  },
+  'Malaysia': {
+    bucket: 'APAC-SEA', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=MY&ceid=MY:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=SG&ceid=SG:en',
+    ]
+  },
+  'Philippines': {
+    bucket: 'APAC-SEA', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=PH&ceid=PH:en',
+    ]
+  },
+  'Australia': {
+    bucket: 'APAC-ANZ', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=AU&ceid=AU:en',
+    ]
+  },
+  'New Zealand': {
+    bucket: 'APAC-ANZ', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=NZ&ceid=NZ:en',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=AU&ceid=AU:en',
+    ]
+  },
+  'Brazil': {
+    bucket: 'LatAm-Brazil', language: 'Portuguese/English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=pt-BR&gl=BR&ceid=BR:pt-419',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=BR&ceid=BR:en',
+    ]
+  },
+  'Mexico': {
+    bucket: 'LatAm-Mexico', language: 'Spanish/English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=es-419&gl=MX&ceid=MX:es-419',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=MX&ceid=MX:en',
+    ]
+  },
+  'Argentina': {
+    bucket: 'LatAm', language: 'Spanish/English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=es-419&gl=AR&ceid=AR:es-419',
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=AR&ceid=AR:en',
+    ]
+  },
+  'South Africa': {
+    bucket: 'Africa', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=ZA&ceid=ZA:en',
+    ]
+  },
+  'Canada': {
+    bucket: 'North America', language: 'English',
+    feeds: [
+      'https://news.google.com/rss/search?q={NAME}&hl=en&gl=CA&ceid=CA:en',
+    ]
+  },
+};
+
+// ─────────────────────────────────────────
+// SUPPLEMENTAL REGIONAL RSS FEEDS
+// These are added on top of Google News for specific regions
+// to catch fintech/accounting press that Google News misses
+// ─────────────────────────────────────────
+const SUPPLEMENTAL_FEEDS = {
+  'EU-France':       ['https://www.maddyness.com/feed/'],
+  'EU-Nordics':      ['https://sifted.eu/feed/'],
+  'EU-Germany':      ['https://sifted.eu/feed/'],
+  'EU-Belgium':      ['https://sifted.eu/feed/'],
+  'EU-Netherlands':  ['https://sifted.eu/feed/'],
+  'EU-Spain':        ['https://sifted.eu/feed/'],
+  'UK':              ['https://www.altfi.com/feed', 'https://www.finextra.com/rss/headlines.aspx'],
+  'UK-Ireland':      ['https://www.finextra.com/rss/headlines.aspx'],
+  'APAC-India':      ['https://inc42.com/feed/', 'https://yourstory.com/feed'],
+  'APAC-SEA':        ['https://www.techinasia.com/feed'],
+  'APAC-ANZ':        ['https://www.smartcompany.com.au/feed/'],
+  'LatAm-Brazil':    ['https://startups.com.br/feed/'],
+  'Middle East-GCC': ['https://wamda.com/feed'],
+};
+
+// ─────────────────────────────────────────
+// MAIN ENTRY POINT
+// ─────────────────────────────────────────
+function runMarketPulse() {
+  Logger.log('Market Pulse v3 starting — ' + new Date());
+
+  const competitors = loadCompetitors();
+  if (!competitors.length) {
+    Logger.log('No competitors found. Check COMPETITOR_SHEET name.');
     return;
   }
 
-  document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>Loading from Google Sheets…</div>';
-
-  try {
-    // Load Signals Log
-    const url1  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const res1  = await fetch(url1);
-    const txt1  = await res1.text();
-    const json1 = JSON.parse(txt1.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const cols1 = json1.table.cols.map(c => c.label);
-    allSignals  = json1.table.rows.map(row => {
-      const obj = {};
-      cols1.forEach((col, i) => { obj[col] = row.c[i] ? (row.c[i].v || '') : ''; });
-      return parseRow(obj);
-    }).filter(s => s.has_signal);
-
-    // Load Research Archive
-    try {
-      const url2  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(RAW_SHEET_NAME)}`;
-      const res2  = await fetch(url2);
-      const txt2  = await res2.text();
-      const json2 = JSON.parse(txt2.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-      const cols2 = json2.table.cols.map(c => c.label);
-      allRawArticles = json2.table.rows.map(row => {
-        const obj = {};
-        cols2.forEach((col, i) => { obj[col] = row.c[i] ? (row.c[i].v || '') : ''; });
-        return parseRawRow(obj);
-      });
-    } catch(e2) {
-      allRawArticles = [];
-    }
-
-    usingLiveData = true;
-    renderAll();
-  } catch(e) {
-    document.getElementById('content').innerHTML = '<div class="empty"><div class="empty-icon">⚠</div><div class="empty-text">Could not load sheet. Check SHEET_ID and ensure the sheet is published.</div></div>';
-  }
-}
-
-function parseRow(r) {
-  const sources = (r.source_urls || r['Source URLs'] || '').toString().split('\n').filter(Boolean);
-  return {
-    date:        r.date        || r['Date']        || '',
-    company:     r.company     || r['Company']     || '',
-    website:     r.website     || r['Website']     || '',
-    tier:        r.tier        || r['Tier']        || 'Adjacent',
-    region:      r.region      || r['Region']      || '',
-    signal_type: r.signal_type || r['Signal Type'] || '',
-    importance:  r.importance  || r['Importance']  || 'Medium',
-    headline:    r.headline    || r['Headline']    || '',
-    summary:     r.summary     || r['Summary']     || '',
-    source_urls: sources,
-    has_signal:  true,
-  };
-}
-
-function parseRawRow(r) {
-  return {
-    runDate:     r['Run Date']      || r.run_date      || '',
-    articleDate: r['Article Date']  || r.article_date  || '',
-    company:     r['Company']       || r.company       || '',
-    tier:        r['Tier']          || r.tier          || '',
-    category:    r['Category']      || r.category      || '',
-    region:      r['Region']        || r.region        || '',
-    title:       r['Title']         || r.title         || '',
-    summary:     r['Summary']       || r.summary       || '',
-    url:         r['URL']           || r.url           || '',
-    language:    r['Language']      || r.language      || '',
-  };
-}
-
-// ─────────────────────────────────────────────────────
-// VIEW SWITCHER
-// ─────────────────────────────────────────────────────
-function switchView(view) {
-  currentView = view;
-  document.getElementById('tab-signals').classList.toggle('active', view === 'signals');
-  document.getElementById('tab-archive').classList.toggle('active', view === 'archive');
-
-  const signalsEls = ['weekTabs', 'statsRow', document.querySelector('.search-row'), 'content'];
-  document.getElementById('weekTabs').style.display   = view === 'signals' ? '' : 'none';
-  document.getElementById('statsRow').style.display   = view === 'signals' ? '' : 'none';
-  document.getElementById('content').style.display    = view === 'signals' ? '' : 'none';
-  document.getElementById('archivePanel').style.display = view === 'archive' ? '' : 'none';
-
-  // Hide the main search row when in archive view (archive has its own)
-  const mainSearchRow = document.querySelector('.search-row');
-  if (mainSearchRow) mainSearchRow.style.display = view === 'signals' ? '' : 'none';
-
-  if (view === 'archive') {
-    archivePage = 1;
-    renderArchive();
-  }
-}
-
-// ─────────────────────────────────────────────────────
-// ARCHIVE RENDER
-// ─────────────────────────────────────────────────────
-function setArchiveSort(descVal, ascVal) {
-  const sel = document.getElementById('archiveSortSelect');
-  if (sel.value === descVal) {
-    sel.value = ascVal;
-  } else {
-    sel.value = descVal;
-  }
-  archivePage = 1;
-  renderArchive();
-}
-
-function renderArchive() {
-  const search  = (document.getElementById('archiveSearch').value || '').toLowerCase();
-  const sortVal = document.getElementById('archiveSortSelect').value;
-
-  let rows = allRawArticles.filter(function(r) {
-    if (!search) return true;
-    return (r.company + r.title + r.summary + r.region + r.tier).toLowerCase().includes(search);
-  });
-
-  // Sort
-  rows = rows.slice().sort(function(a, b) {
-    switch(sortVal) {
-      case 'article-date-asc':  return a.articleDate < b.articleDate ? -1 : 1;
-      case 'article-date-desc': return a.articleDate > b.articleDate ? -1 : 1;
-      case 'run-date-desc':     return a.runDate > b.runDate ? -1 : 1;
-      case 'company-asc':       return a.company.toLowerCase() < b.company.toLowerCase() ? -1 : 1;
-      default:                  return a.articleDate > b.articleDate ? -1 : 1;
-    }
-  });
-
-  const total   = rows.length;
-  const pages   = Math.ceil(total / ARCHIVE_PAGE_SIZE) || 1;
-  archivePage   = Math.min(archivePage, pages);
-  const start   = (archivePage - 1) * ARCHIVE_PAGE_SIZE;
-  const pageRows = rows.slice(start, start + ARCHIVE_PAGE_SIZE);
-
-  // Update sort indicators
-  ['date','run','company'].forEach(function(k) {
-    const el = document.getElementById('si-' + k);
-    if (el) { el.textContent = ''; }
-    const h = document.getElementById('ah-' + k);
-    if (h) h.classList.remove('sorted');
-  });
-  if (sortVal.includes('article-date')) {
-    const el = document.getElementById('si-date');
-    if (el) { el.textContent = sortVal === 'article-date-desc' ? '↓' : '↑'; }
-    const h = document.getElementById('ah-date');
-    if (h) h.classList.add('sorted');
-  } else if (sortVal === 'run-date-desc') {
-    const el = document.getElementById('si-run');
-    if (el) el.textContent = '↓';
-    const h = document.getElementById('ah-run');
-    if (h) h.classList.add('sorted');
-  } else if (sortVal.includes('company')) {
-    const el = document.getElementById('si-company');
-    if (el) el.textContent = sortVal === 'company-asc' ? '↑' : '↓';
-    const h = document.getElementById('ah-company');
-    if (h) h.classList.add('sorted');
-  }
-
-  // Build table rows
-  const tbody = document.getElementById('archiveTbody');
-  if (!tbody) return;
-
-  const tierClass = function(t) {
-    return t === 'Direct' ? 'tag-tier-direct' : t === 'Adjacent' ? 'tag-tier-adjacent' : 'tag-tier-ma';
-  };
-
-  tbody.innerHTML = pageRows.map(function(r) {
-    const shortUrl = r.url ? r.url.replace(/^https?:\/\//, '').substring(0, 30) + (r.url.length > 35 ? '…' : '') : '';
-    return `<tr>
-      <td class="cell-date">${escHtml(r.articleDate)}</td>
-      <td class="cell-date">${escHtml(r.runDate)}</td>
-      <td class="cell-company">${escHtml(r.company)}</td>
-      <td><span class="tag ${tierClass(r.tier)}" style="font-size:10px;">${escHtml(r.tier)}</span></td>
-      <td><span class="tag tag-region" style="font-size:10px;">${escHtml(r.region)}</span></td>
-      <td class="cell-title">${escHtml(r.title)}</td>
-      <td class="cell-summary">${escHtml(r.summary)}</td>
-      <td class="cell-url">${r.url ? `<a href="${escHtml(r.url)}" target="_blank" rel="noopener">${escHtml(shortUrl)}</a>` : ''}</td>
-    </tr>`;
-  }).join('');
-
-  document.getElementById('pageInfo').textContent    = 'Page ' + archivePage + ' of ' + pages;
-  document.getElementById('archiveCount').textContent = total + ' articles';
-  document.getElementById('prevPage').disabled        = archivePage <= 1;
-  document.getElementById('nextPage').disabled        = archivePage >= pages;
-}
-
-function changePage(dir) {
-  archivePage += dir;
-  renderArchive();
-}
-
-// ─────────────────────────────────────────────────────
-// RENDER
-// ─────────────────────────────────────────────────────
-function renderAll() {
-  updateStats();
-  buildWeekTabs();
-  if (currentView === 'signals') {
-    applyFilters();
-  } else {
-    renderArchive();
-  }
-}
-
-function updateStats() {
-  const high     = allSignals.filter(s => s.importance === 'High').length;
-  const direct   = allSignals.filter(s => s.tier === 'Direct').length;
-  const adjacent = allSignals.filter(s => s.tier === 'Adjacent').length;
-  const ma       = allSignals.filter(s => s.tier === 'M&A Watch').length;
-  const weeks    = [...new Set(allSignals.map(s => s.date))].length;
-
-  document.getElementById('totalBadge').textContent = allSignals.length + ' signals';
-  document.getElementById('count-tier-all').textContent      = allSignals.length;
-  document.getElementById('count-tier-Direct').textContent   = direct;
-  document.getElementById('count-tier-Adjacent').textContent = adjacent;
-  document.getElementById('count-tier-ma').textContent       = ma;
-
-  document.getElementById('statsRow').innerHTML = `
-    <div class="stat-box"><div class="stat-num">${allSignals.length}</div><div class="stat-label">Total signals</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:var(--accent)">${high}</div><div class="stat-label">High importance</div></div>
-    <div class="stat-box"><div class="stat-num">${weeks}</div><div class="stat-label">Weeks tracked</div></div>
-    <div class="stat-box"><div class="stat-num">${ma}</div><div class="stat-label">M&A watch signals</div></div>
-  `;
-}
-
-function buildWeekTabs() {
-  const container = document.getElementById('weekTabs');
-  // Get unique dates sorted newest first
-  const dates = [...new Set(allSignals.map(s => s.date))].sort().reverse();
-
-  let html = `<button class="week-tab ${activeWeek === 'all' ? 'active' : ''}" onclick="selectWeek('all', this)">
-    All weeks <span class="tab-count">${allSignals.length}</span>
-  </button>`;
-
-  dates.forEach(d => {
-    const count   = allSignals.filter(s => s.date === d).length;
-    const label   = formatTabDate(d);
-    const isActive = activeWeek === d;
-    html += `<button class="week-tab ${isActive ? 'active' : ''}" onclick="selectWeek('${d}', this)">
-      ${label} <span class="tab-count">${count}</span>
-    </button>`;
-  });
-
-  container.innerHTML = html;
-}
-
-function formatTabDate(dateStr) {
-  // '2026-03-20' → 'Mar 20'
-  const d = new Date(dateStr + 'T12:00:00');
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
-
-function selectWeek(week, btn) {
-  activeWeek = week;
-  document.querySelectorAll('.week-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  applyFilters();
-}
-
-// ─────────────────────────────────────────────────────
-// FILTERS + SORT
-// ─────────────────────────────────────────────────────
-function applyFilters() {
-  const search  = document.getElementById('searchInput').value.toLowerCase();
-  const sortVal = document.getElementById('sortSelect').value;
-
-  let filtered = allSignals.filter(s => {
-    if (filters.tier !== 'all' && s.tier !== filters.tier) return false;
-    if (filters.type !== 'all' && s.signal_type !== filters.type) return false;
-    if (filters.importance !== 'all' && s.importance !== filters.importance) return false;
-    if (activeWeek !== 'all' && s.date !== activeWeek) return false;
-    if (search) {
-      const hay = (s.company + s.headline + s.summary + s.signal_type + s.region).toLowerCase();
-      if (!hay.includes(search)) return false;
-    }
+  // Deduplicate by name
+  const seen = {};
+  const unique = competitors.filter(function(c) {
+    if (seen[c.name]) return false;
+    seen[c.name] = true;
     return true;
   });
 
-  // Apply sort
-  const impOrder = { High: 0, Medium: 1, Low: 2 };
-  filtered = filtered.slice().sort((a, b) => {
-    switch(sortVal) {
-      case 'date-asc':        return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
-      case 'date-desc':       return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
-      case 'company-asc':     return a.company.toLowerCase() < b.company.toLowerCase() ? -1 : 1;
-      case 'company-desc':    return a.company.toLowerCase() > b.company.toLowerCase() ? -1 : 1;
-      case 'importance-desc': return (impOrder[a.importance] || 1) - (impOrder[b.importance] || 1);
-      default:                return a.date > b.date ? -1 : 1;
+  Logger.log('Loaded ' + unique.length + ' unique competitors');
+
+  // Fetch articles for each competitor using region-aware feeds
+  const rawSignals = [];
+  unique.forEach(function(c) {
+    const articles = fetchArticles(c);
+    if (articles.length > 0) {
+      rawSignals.push({ competitor: c, articles: articles });
     }
   });
 
-  renderSignals(filtered, sortVal);
-}
+  Logger.log('Found articles for ' + rawSignals.length + ' companies');
 
-function setFilter(key, value, btn) {
-  filters[key] = value;
-  document.querySelectorAll(`[data-filter="${key}"]`).forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  applyFilters();
-}
-
-// ─────────────────────────────────────────────────────
-// RENDER SIGNALS
-// ─────────────────────────────────────────────────────
-function renderSignals(signals, sortVal) {
-  if (!signals.length) {
-    document.getElementById('content').innerHTML = '<div class="empty"><div class="empty-icon">◈</div><div class="empty-text">No signals match your filters.</div></div>';
+  if (!rawSignals.length) {
+    Logger.log('No articles found this week.');
     return;
   }
 
-  // For company/importance sorts — show flat list with date badge per card
-  // For date sorts — group by week
-  const useFlatList = sortVal === 'company-asc' || sortVal === 'company-desc' || sortVal === 'importance-desc';
+  // Save all raw articles to Research Archive BEFORE Claude filtering
+  saveRawArticles(rawSignals);
 
-  let html = '';
+  // Analyze with Claude in batches of 5
+  const analyzedSignals = analyzeWithClaude(rawSignals);
 
-  if (useFlatList) {
-    html += '<div class="week-section"><div class="week-header"><span class="week-label">' +
-            signals.length + ' signal' + (signals.length !== 1 ? 's' : '') + '</span></div>';
-    signals.forEach(s => { html += buildCard(s, true); });
-    html += '</div>';
+  // Save to sheet
+  saveSignals(analyzedSignals);
+
+  // Post to Slack (skip if no webhook configured)
+  if (CONFIG.SLACK_WEBHOOK_URL && CONFIG.SLACK_WEBHOOK_URL !== 'YOUR_SLACK_WEBHOOK_URL_HERE') {
+    postSlackDigest(analyzedSignals, unique.length);
   } else {
-    // Group by date
-    const byDate = {};
-    signals.forEach(s => {
-      if (!byDate[s.date]) byDate[s.date] = [];
-      byDate[s.date].push(s);
-    });
+    Logger.log('Slack webhook not configured — skipping digest. Results saved to Signals Log.');
+  }
 
-    const dates = Object.keys(byDate).sort();
-    if (sortVal === 'date-desc') dates.reverse();
+  // Push data.json to GitHub to trigger dashboard update
+  if (CONFIG.GITHUB_TOKEN && CONFIG.GITHUB_TOKEN !== 'YOUR_GITHUB_TOKEN_HERE') {
+    pushDataToGitHub(analyzedSignals, rawSignals);
+  } else {
+    Logger.log('GitHub token not configured — skipping dashboard update.');
+  }
 
-    dates.forEach(date => {
-      const items = byDate[date];
-      // Within each week sort by importance
-      items.sort((a, b) => {
-        const imp = { High: 0, Medium: 1, Low: 2 };
-        return (imp[a.importance] || 1) - (imp[b.importance] || 1);
-      });
+  Logger.log('Complete — ' + analyzedSignals.length + ' signals processed.');
+}
 
-      html += `<div class="week-section">
-        <div class="week-header">
-          <span class="week-label">Week of ${date}</span>
-          <span class="week-count">${items.length} signal${items.length !== 1 ? 's' : ''}</span>
-        </div>`;
-      items.forEach(s => { html += buildCard(s, false); });
-      html += '</div>';
+// ─────────────────────────────────────────
+// LOAD COMPETITORS
+// ─────────────────────────────────────────
+function loadCompetitors() {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(CONFIG.COMPETITOR_SHEET);
+  if (!sheet) { Logger.log('Sheet not found: ' + CONFIG.COMPETITOR_SHEET); return []; }
+
+  const data        = sheet.getDataRange().getValues();
+  const competitors = [];
+
+  for (let i = 1; i < data.length; i++) {
+    const row  = data[i];
+    const name = (row[COL.NAME] || '').toString().trim();
+    if (!name) continue;
+
+    const category = (row[COL.CATEGORY]  || '').toString().trim();
+    const region   = (row[COL.REGION]    || '').toString().trim();
+    const regional = getRegionalConfig(region);
+
+    competitors.push({
+      name:         name,
+      category:     category,
+      category2:    (row[COL.CATEGORY2]  || '').toString().trim(),
+      tier:         getTier(category),
+      region:       region,
+      regionBucket: regional.bucket,
+      language:     regional.language,
+      feeds:        regional.feeds,
+      jtbd:         (row[COL.JTBD]       || '').toString().trim(),
+      notes:        (row[COL.NOTES]      || '').toString().trim(),
+      alertsRss:    (row[COL.ALERTS_RSS] || '').toString().trim(),
+      website:      (row[COL.WEBSITE]    || '').toString().trim(),
     });
   }
 
-  document.getElementById('content').innerHTML = html;
+  return competitors;
 }
 
-function buildCard(s, showDate) {
-  const tierClass = s.tier === 'Direct' ? 'tag-tier-direct' : s.tier === 'Adjacent' ? 'tag-tier-adjacent' : 'tag-tier-ma';
-  const isHigh    = s.importance === 'High';
-  const companyEl = s.website
-    ? `<a class="company-link" href="${s.website}" target="_blank" rel="noopener">${escHtml(s.company)}</a>`
-    : `<span class="company-link">${escHtml(s.company)}</span>`;
+function getTier(category) {
+  for (const tier in TIER_MAP) {
+    if (TIER_MAP[tier].indexOf(category) !== -1) return tier;
+  }
+  return 'Adjacent';
+}
 
-  const sources = s.source_urls.map((url, i) => {
-    const label = s.source_urls.length > 1 ? `source ${i+1}` : 'source';
-    return `<a class="source-link" href="${url}" target="_blank" rel="noopener">${label}</a>`;
-  }).join('<span class="source-sep"> · </span>');
+function getRegionalConfig(region) {
+  for (const key in REGION_CONFIG) {
+    if (region.indexOf(key) !== -1) return REGION_CONFIG[key];
+  }
+  // Default: US/Global English
+  return {
+    bucket: 'US/Global',
+    language: 'English',
+    feeds: ['https://news.google.com/rss/search?q={NAME}&hl=en&gl=US&ceid=US:en'],
+  };
+}
 
-  const dateBadge = showDate
-    ? `<span class="tag tag-type" style="margin-left:auto;">${escHtml(s.date)}</span>`
+// ─────────────────────────────────────────
+// FETCH ARTICLES — region-aware, multi-feed
+// ─────────────────────────────────────────
+function fetchArticles(competitor) {
+  const articles   = [];
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  oneWeekAgo.setHours(0, 0, 0, 0);  // start of day 7 days ago — strict cutoff
+  const seen       = {};  // deduplicate by title
+
+  const encodedName = encodeURIComponent('"' + competitor.name + '"');
+
+  // Build feed list: manual Alerts RSS first, then regional Google News, then supplemental
+  const feedUrls = [];
+
+  if (competitor.alertsRss) {
+    feedUrls.push(competitor.alertsRss);
+  }
+
+  competitor.feeds.forEach(function(tpl) {
+    feedUrls.push(tpl.replace('{NAME}', encodedName));
+  });
+
+  const suppFeeds = SUPPLEMENTAL_FEEDS[competitor.regionBucket] || [];
+  suppFeeds.forEach(function(url) { feedUrls.push(url); });
+
+  // Fetch each feed, collect articles mentioning the company
+  feedUrls.forEach(function(url) {
+    if (articles.length >= 8) return;  // cap total per company
+    try {
+      const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+      if (resp.getResponseCode() !== 200) return;
+
+      const xml     = XmlService.parse(resp.getContentText());
+      const root    = xml.getRootElement();
+      const channel = root.getChild('channel');
+      if (!channel) return;
+
+      channel.getChildren('item').forEach(function(item) {
+        if (articles.length >= 8) return;
+        try {
+          const title   = item.getChildText('title')       || '';
+          const desc    = item.getChildText('description') || '';
+          const link    = item.getChildText('link')        || '';
+          const dateStr = item.getChildText('pubDate')     || '';
+          const pubDate = dateStr ? new Date(dateStr) : new Date();
+
+          if (pubDate < oneWeekAgo) return;
+          if (seen[title])          return;
+
+          // For supplemental feeds, only keep items that mention the company
+          const isSuppFeed = suppFeeds.indexOf(url) !== -1;
+          const nameMatch  = (title + desc).toLowerCase().indexOf(competitor.name.toLowerCase()) !== -1;
+          if (isSuppFeed && !nameMatch) return;
+
+          seen[title] = true;
+          const clean = desc.replace(/<[^>]+>/g, '').substring(0, 400);
+
+          articles.push({
+            title:   title,
+            link:    link,
+            summary: clean,
+            date:    pubDate.toISOString().split('T')[0],
+            lang:    competitor.language,
+          });
+        } catch(e) { /* skip malformed */ }
+      });
+
+    } catch(e) {
+      Logger.log('Feed error [' + competitor.name + ']: ' + e.message);
+    }
+  });
+
+  return articles;
+}
+
+// ─────────────────────────────────────────
+// CLAUDE ANALYSIS — region-aware prompt
+// ─────────────────────────────────────────
+
+// Load headlines from the past 2 weeks of Signals Log
+// so Claude can skip anything already covered
+function getPreviousHeadlines() {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(CONFIG.SIGNALS_SHEET);
+  if (!sheet) return [];
+
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 14);
+  const data = sheet.getDataRange().getValues();
+
+  const headlines = [];
+  for (let i = 1; i < data.length; i++) {
+    const rowDate = new Date(data[i][0]);
+    if (rowDate >= cutoff) {
+      const company  = data[i][1] || '';
+      const headline = data[i][7] || '';  // col H = Headline
+      if (company && headline) {
+        headlines.push(company + ': ' + headline);
+      }
+    }
+  }
+  return headlines;
+}
+
+function analyzeWithClaude(rawSignals) {
+  const all               = [];
+  const previousHeadlines = getPreviousHeadlines();
+  for (let i = 0; i < rawSignals.length; i += 5) {
+    analyzeBatch(rawSignals.slice(i, i + 5), previousHeadlines).forEach(function(r) { all.push(r); });
+    Utilities.sleep(1000);
+  }
+  return all;
+}
+
+function analyzeBatch(batch, previousHeadlines) {
+  // Calculate the strict 7-day window for this run
+  const runDate    = new Date();
+  const cutoffDate = new Date();
+  cutoffDate.setDate(runDate.getDate() - 7);
+  cutoffDate.setHours(0, 0, 0, 0);
+  const runDateStr    = runDate.toISOString().split('T')[0];
+  const cutoffDateStr = cutoffDate.toISOString().split('T')[0];
+
+  // Format previously covered stories for the prompt
+  const prevBlock = (previousHeadlines && previousHeadlines.length > 0)
+    ? '\n\nALREADY COVERED IN PREVIOUS DIGESTS — do NOT repeat these stories unless there is a material new development this week (e.g. a funding round that has now closed, a product that has now launched, a new detail that changes the competitive picture). A new article republishing the same information does not count as a new development:\n' +
+      previousHeadlines.map(function(h) { return '- ' + h; }).join('\n')
     : '';
 
-  return `<div class="signal-card ${isHigh ? 'high' : ''}">
-    <div class="card-top">
-      ${companyEl}
-      <div class="card-meta">
-        <span class="tag tag-type">${escHtml(s.signal_type)}</span>
-        <span class="tag ${tierClass}">${escHtml(s.tier)}</span>
-        ${s.region ? `<span class="tag tag-region">${escHtml(s.region)}</span>` : ''}
-        ${isHigh ? `<span class="tag tag-high">High</span>` : ''}
-        ${dateBadge}
-      </div>
-    </div>
-    <div class="card-headline">${escHtml(s.headline)}</div>
-    <div class="card-summary">${escHtml(s.summary)}</div>
-    ${sources ? `<div class="card-sources">${sources}</div>` : ''}
-  </div>`;
+  const blocks = batch.map(function(item) {
+    const c           = item.competitor;
+    const articleList = item.articles.map(function(a, n) {
+      return (n + 1) + '. [' + a.date + '] ' + a.title + '\n   ' + a.summary + '\n   URL: ' + a.link;
+    }).join('\n');
+
+    return [
+      'COMPANY: '       + c.name,
+      'WEBSITE: '       + (c.website || ''),
+      'TIER: '          + c.tier,
+      'CATEGORY: '      + c.category2,
+      'REGION: '        + c.region + ' (' + c.regionBucket + ')',
+      'LANGUAGE: '      + c.language,
+      'WHAT THEY DO: '  + c.jtbd,
+      'ARTICLES:\n'     + articleList,
+    ].join('\n');
+  }).join('\n\n---\n\n');
+
+  const prompt = `You are a competitive intelligence analyst covering a global fintech/accounting software market.
+
+STRICT DATE RULE: Today is ${runDateStr}. Only include signals from articles published on or after ${cutoffDateStr} (the past 7 days). If an article is older than 7 days, ignore it completely — do not reference it in the headline, summary, or source_urls. If a company has no articles within the past 7 days, set has_signal to false.
+
+NO DUPLICATES RULE: Do not repeat stories already covered in previous digests unless there is a genuinely material new development this week — for example a funding round that has now officially closed, a product that has now launched, a meaningful new detail that changes the competitive picture. A new article republishing the same story does not count. If the only news is a rehash of something already covered, set has_signal to false.${prevBlock}
+
+Focus only on signals with genuine international relevance — a US company opening an office abroad, a European company raising funding, a regulatory change affecting multiple markets, a new international product launch, etc. Skip signals that are purely domestic with no international angle.
+
+Analyze the articles below. Some articles may be in French, German, Spanish, Portuguese, Dutch, or other languages — translate and interpret them accurately.
+
+Return a JSON array — one object per company. Return ONLY the JSON array, no preamble, no markdown.
+
+Each object:
+- "company": string
+- "company_website": string (the company website URL provided, e.g. "https://pennylane.com")
+- "tier": string (use value provided exactly)
+- "region_bucket": string (use value provided exactly)
+- "has_signal": boolean (true only if there is meaningful internationally-relevant NEW news from the past 7 days, not already covered)
+- "signal_type": one of "Product", "Pricing", "Hiring", "Funding", "Sentiment", "Strategy", "Partnership", "M&A Signal", "Regulatory", "No Signal"
+- "importance": "High", "Medium", or "Low"
+- "headline": one crisp sentence max 15 words — what happened this week
+- "summary": 2-3 sentences — what happened and why it matters competitively
+- "source_urls": array of up to 3 most relevant article URLs from the past 7 days only — empty array if none
+- "source_language": language the key source article was in
+
+Be direct and analytical. For non-English sources, note the original language in source_language. Only set has_signal to true if there is a clear, NEW international competitive signal from the past 7 days that has not already been covered.
+
+${blocks}`;
+
+  try {
+    const resp = UrlFetchApp.fetch('https://api.anthropic.com/v1/messages', {
+      method:  'post',
+      headers: {
+        'x-api-key':         CONFIG.CLAUDE_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'content-type':      'application/json',
+      },
+      payload: JSON.stringify({
+        model:      'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages:   [{ role: 'user', content: prompt }],
+      }),
+      muteHttpExceptions: true,
+    });
+
+    if (resp.getResponseCode() !== 200) {
+      Logger.log('Claude API error ' + resp.getResponseCode() + ': ' + resp.getContentText());
+      return fallbackSignals(batch);
+    }
+
+    const data  = JSON.parse(resp.getContentText());
+    const text  = data.content[0].text.trim().replace(/```json|```/g, '').trim();
+    return JSON.parse(text);
+
+  } catch(e) {
+    Logger.log('Claude error: ' + e.message);
+    return fallbackSignals(batch);
+  }
 }
 
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function fallbackSignals(batch) {
+  return batch.map(function(item) {
+    return {
+      company: item.competitor.name, tier: item.competitor.tier,
+      company_website: item.competitor.website || '',
+      region_bucket: item.competitor.regionBucket,
+      has_signal: false, signal_type: 'No Signal',
+      importance: 'Low', headline: 'Analysis unavailable',
+      summary: '', source_urls: [], source_language: 'en',
+    };
+  });
 }
 
-// ─────────────────────────────────────────────────────
-// FEEDBACK
-// ─────────────────────────────────────────────────────
-function saveFeedback() {
-  const text = document.getElementById('feedbackText').value.trim();
-  if (!text) return;
-  localStorage.setItem('marketpulse_feedback', text);
-  const saved = document.getElementById('feedbackSaved');
-  saved.style.display = 'inline';
-  setTimeout(() => { saved.style.display = 'none'; }, 2500);
+// ─────────────────────────────────────────
+// SAVE TO SIGNALS LOG
+// ─────────────────────────────────────────
+function saveSignals(signals) {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  let   sheet = ss.getSheetByName(CONFIG.SIGNALS_SHEET);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(CONFIG.SIGNALS_SHEET);
+    const h = ['Date','Company','Website','Tier','Region','Signal Type','Importance','Headline','Summary','Source URLs','Source Language'];
+    sheet.appendRow(h);
+    sheet.getRange(1, 1, 1, h.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
+
+  const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+
+  signals.forEach(function(s) {
+    const sourceUrls = Array.isArray(s.source_urls) ? s.source_urls.join('\n') : (s.source_url || '');
+    sheet.appendRow([
+      today,
+      s.company         || '',
+      s.company_website || '',
+      s.tier            || '',
+      s.region_bucket   || '',
+      s.signal_type     || '',
+      s.importance      || '',
+      s.headline        || '',
+      s.summary         || '',
+      sourceUrls,
+      s.source_language || '',
+    ]);
+  });
+
+  pruneOldRows(sheet);
+  Logger.log('Saved ' + signals.length + ' signals');
 }
 
-// Load saved feedback on open
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('marketpulse_feedback');
-  if (saved) document.getElementById('feedbackText').value = saved;
-  loadData();
-});
-</script>
-</body>
-</html>
+function pruneOldRows(sheet) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - CONFIG.WEEKS_TO_KEEP * 7);
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (new Date(data[i][0]) < cutoff) sheet.deleteRow(i + 1);
+  }
+}
+
+// ─────────────────────────────────────────
+// SAVE RAW ARTICLES to Research Archive
+// Saves every fetched article before Claude filtering
+// ─────────────────────────────────────────
+function saveRawArticles(rawSignals) {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  let   sheet = ss.getSheetByName(CONFIG.RAW_ARTICLES_SHEET);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(CONFIG.RAW_ARTICLES_SHEET);
+    const h = ['Run Date', 'Article Date', 'Company', 'Tier', 'Category', 'Region', 'Title', 'Summary', 'URL', 'Language'];
+    sheet.appendRow(h);
+    sheet.getRange(1, 1, 1, h.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1, 90);
+    sheet.setColumnWidth(2, 90);
+    sheet.setColumnWidth(3, 130);
+    sheet.setColumnWidth(4, 80);
+    sheet.setColumnWidth(5, 130);
+    sheet.setColumnWidth(6, 100);
+    sheet.setColumnWidth(7, 280);
+    sheet.setColumnWidth(8, 350);
+    sheet.setColumnWidth(9, 220);
+    sheet.setColumnWidth(10, 80);
+  }
+
+  const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+
+  rawSignals.forEach(function(item) {
+    const c = item.competitor;
+    item.articles.forEach(function(a) {
+      sheet.appendRow([
+        today,
+        a.date        || '',
+        c.name        || '',
+        c.tier        || '',
+        c.category2   || '',
+        c.regionBucket|| '',
+        a.title       || '',
+        a.summary     || '',
+        a.link        || '',
+        c.language    || '',
+      ]);
+    });
+  });
+
+  // Prune old rows from archive too
+  pruneOldRows(sheet);
+  Logger.log('Saved raw articles to Research Archive');
+}
+
+// ─────────────────────────────────────────
+// SLACK DIGEST
+// Format: bullet per signal, sources on own line, summary below
+// ─────────────────────────────────────────
+function postSlackDigest(signals, totalCompanies) {
+  const today     = new Date();
+  const weekStart = new Date(today);
+  weekStart.setDate(today.getDate() - 6);
+  weekStart.setHours(0, 0, 0, 0);
+  const fmt         = function(d) { return d.toLocaleDateString('en-GB', {day:'numeric',month:'short'}); };
+  const dateRange   = fmt(weekStart) + ' \u2013 ' + fmt(today);
+  const runDateStr  = today.toISOString().split('T')[0];
+  const cutDateStr  = weekStart.toISOString().split('T')[0];
+
+  const byTier    = { 'Direct': [], 'Adjacent': [], 'M&A Watch': [] };
+  const highItems = [];
+
+  signals.forEach(function(s) {
+    if (!s.has_signal || s.signal_type === 'No Signal') return;
+    const tier = s.tier || 'Adjacent';
+    if (byTier[tier]) byTier[tier].push(s);
+    if (s.importance === 'High') highItems.push(s);
+  });
+
+  const totalSignals = signals.filter(function(s) { return s.has_signal; }).length;
+  const bigStory     = highItems[0] || signals.find(function(s) { return s.has_signal; });
+
+  // Build message as plain text (mrkdwn) for clean bullet formatting
+  var msg = '';
+
+  msg += ':bar_chart: *International Competitive Intelligence Digest*\n';
+  msg += '*Week of ' + dateRange + '*\n\n';
+  msg += '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n';
+
+  // Biggest story
+  if (bigStory) {
+    const bigLink = bigStory.company_website
+      ? '<' + bigStory.company_website + '|' + bigStory.company + '>'
+      : bigStory.company;
+    const bigSrcUrls = Array.isArray(bigStory.source_urls) ? bigStory.source_urls : [];
+    const bigSrcStr  = bigSrcUrls.map(function(u, i) {
+      return '<' + u + '|source' + (bigSrcUrls.length > 1 ? ' ' + (i+1) : '') + '>';
+    }).join(' \u00b7 ');
+
+    msg += ':rotating_light: *Biggest story this week*\n\n';
+    msg += '*' + bigLink + '* has ' + bigStory.summary + '\n';
+    if (bigSrcStr) msg += bigSrcStr + '\n';
+    msg += '\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n';
+  }
+
+  const tiers = [
+    { key: 'Direct',    emoji: ':red_circle:',          label: 'Direct competitors \u2014 Core accounting' },
+    { key: 'Adjacent',  emoji: ':large_green_circle:',  label: 'Adjacent players \u2014 Spend management & tax' },
+    { key: 'M&A Watch', emoji: ':large_yellow_circle:', label: 'M&A watch' },
+  ];
+
+  let shown = 0;
+  tiers.forEach(function(tc) {
+    const items = byTier[tc.key];
+    if (!items.length) return;
+
+    msg += tc.emoji + ' *' + tc.label + '*\n\n';
+
+    items.forEach(function(s) {
+      if (shown >= CONFIG.MAX_SIGNALS_SLACK) return;
+
+      const star       = s.importance === 'High' ? ' :star:' : '';
+      const compLink   = s.company_website
+        ? '<' + s.company_website + '|' + s.company + '>'
+        : s.company;
+      const region     = s.region_bucket ? ' \u00b7 ' + s.region_bucket : '';
+      const srcUrls    = Array.isArray(s.source_urls) ? s.source_urls : [];
+      const srcStr     = srcUrls.map(function(u, i) {
+        return '<' + u + '|source' + (srcUrls.length > 1 ? ' ' + (i+1) : '') + '>';
+      }).join(' \u00b7 ');
+      const lang       = (s.source_language && s.source_language !== 'en' && s.source_language !== 'English')
+                           ? ' _(translated from ' + s.source_language + ')_' : '';
+
+      // Line 1: bullet + company + region + signal type
+      msg += '\u2022 ' + star + ' *' + compLink + '*' + region + ' \u00b7 `' + s.signal_type + '`\n';
+      // Line 2: source links
+      if (srcStr) msg += srcStr + '\n';
+      // Line 3: summary
+      msg += s.summary + lang + '\n\n';
+
+      shown++;
+    });
+
+    msg += '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n';
+  });
+
+  // Watch next week — pulled from High importance items not already featured
+  const watchItems = highItems.slice(0, 5);
+  if (watchItems.length) {
+    msg += ':pushpin: *Watch next week*\n\n';
+    watchItems.forEach(function(s) {
+      const compLink = s.company_website
+        ? '<' + s.company_website + '|' + s.company + '>'
+        : s.company;
+      const srcUrls  = Array.isArray(s.source_urls) ? s.source_urls : [];
+      const srcStr   = srcUrls.length > 0 ? ' \u00b7 <' + srcUrls[0] + '|source>' : '';
+      msg += '\u2022 *' + compLink + '* \u2014 ' + s.headline + srcStr + '\n\n';
+    });
+    msg += '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n';
+  }
+
+  // Footer
+  msg += ':bar_chart: <' + CONFIG.DASHBOARD_URL + '|View full dashboard>\n\n';
+  msg += ':speech_balloon: <' + CONFIG.DASHBOARD_URL + '|Leave feedback for next week> \u2014 scroll to the bottom of the dashboard\n\n';
+  msg += '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n';
+  msg += '_' + totalSignals + ' signals  \u00b7  All from ' + cutDateStr + ' \u2013 ' + runDateStr + '  \u00b7  Next digest Fri ' + getNextFriday() + ', 8am PT_';
+
+  sendToSlack({ username: 'Market Pulse', icon_emoji: ':bar_chart:', text: msg });
+
+  // Post feedback thread reply
+  Logger.log('Digest posted. Posting feedback thread reply separately if needed.');
+}
+
+function sendToSlack(payload) {
+  try {
+    const r = UrlFetchApp.fetch(CONFIG.SLACK_WEBHOOK_URL, {
+      method: 'post', contentType: 'application/json',
+      payload: JSON.stringify(payload), muteHttpExceptions: true,
+    });
+    Logger.log('Slack: ' + r.getResponseCode());
+  } catch(e) { Logger.log('Slack error: ' + e.message); }
+}
+
+function getNextFriday() {
+  const d = new Date();
+  d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7 || 7));
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+// ─────────────────────────────────────────
+// ONE-TIME SETUP
+// ─────────────────────────────────────────
+function setupSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  if (!ss.getSheetByName(CONFIG.SIGNALS_SHEET)) {
+    const sheet = ss.insertSheet(CONFIG.SIGNALS_SHEET);
+    const h     = ['Date','Company','Website','Tier','Region','Signal Type','Importance','Headline','Summary','Source URLs','Source Language'];
+    sheet.appendRow(h);
+    sheet.getRange(1,1,1,h.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+    const widths = [95,140,180,90,120,110,80,230,350,280,100];
+    widths.forEach(function(w,i) { sheet.setColumnWidth(i+1, w); });
+    Logger.log('Signals Log tab created');
+  }
+
+  const comp = ss.getSheetByName(CONFIG.COMPETITOR_SHEET);
+  if (comp) {
+    const headers = comp.getRange(1,1,1,12).getValues()[0];
+
+    if (headers.indexOf('Alerts RSS') === -1) {
+      comp.getRange(1, COL.ALERTS_RSS + 1).setValue('Alerts RSS');
+      comp.getRange(1, COL.ALERTS_RSS + 1).setFontWeight('bold');
+      comp.setColumnWidth(COL.ALERTS_RSS + 1, 280);
+      Logger.log('Added Alerts RSS column H');
+    }
+
+    if (headers.indexOf('Website') === -1) {
+      comp.getRange(1, COL.WEBSITE + 1).setValue('Website');
+      comp.getRange(1, COL.WEBSITE + 1).setFontWeight('bold');
+      comp.setColumnWidth(COL.WEBSITE + 1, 200);
+      Logger.log('Added Website column I — fill in each company homepage URL e.g. https://pennylane.com');
+    }
+  }
+
+  Logger.log('Setup complete. Add Alerts RSS URLs to column H and company website URLs to column I.');
+
+  // Create Research Archive tab if missing
+  if (!ss.getSheetByName(CONFIG.RAW_ARTICLES_SHEET)) {
+    const raw = ss.insertSheet(CONFIG.RAW_ARTICLES_SHEET);
+    const h   = ['Run Date','Article Date','Company','Tier','Category','Region','Title','Summary','URL','Language'];
+    raw.appendRow(h);
+    raw.getRange(1,1,1,h.length).setFontWeight('bold');
+    raw.setFrozenRows(1);
+    const widths = [90,90,130,80,130,100,280,350,220,80];
+    widths.forEach(function(w,i) { raw.setColumnWidth(i+1, w); });
+    Logger.log('Research Archive tab created');
+  }
+}
+
+// ─────────────────────────────────────────
+// PUSH DATA TO GITHUB
+// Writes data.json to the repo so GitHub
+// Actions can regenerate index.html
+// ─────────────────────────────────────────
+function pushDataToGitHub(signals, rawSignals) {
+  try {
+    const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+
+    // Build signals array
+    const signalRows = signals.filter(function(s) { return s.has_signal; }).map(function(s) {
+      return {
+        date:        today,
+        company:     s.company         || '',
+        website:     s.company_website || '',
+        tier:        s.tier            || '',
+        region:      s.region_bucket   || '',
+        signal_type: s.signal_type     || '',
+        importance:  s.importance      || '',
+        headline:    s.headline        || '',
+        summary:     s.summary         || '',
+        source_urls: Array.isArray(s.source_urls) ? s.source_urls.join('\n') : '',
+      };
+    });
+
+    // Build raw articles array
+    const articleRows = [];
+    rawSignals.forEach(function(item) {
+      const c = item.competitor;
+      item.articles.forEach(function(a) {
+        articleRows.push({
+          run_date:     today,
+          article_date: a.date    || '',
+          company:      c.name    || '',
+          tier:         c.tier    || '',
+          category:     c.category2    || '',
+          region:       c.regionBucket || '',
+          title:        a.title   || '',
+          summary:      a.summary || '',
+          url:          a.link    || '',
+          language:     c.language || '',
+        });
+      });
+    });
+
+    const payload = JSON.stringify({ signals: signalRows, archive: articleRows }, null, 2);
+    const encoded = Utilities.base64Encode(payload);
+
+    // Check if data.json already exists (need its SHA to update)
+    const apiBase = 'https://api.github.com/repos/' + CONFIG.GITHUB_REPO + '/contents/data.json';
+    const headers = {
+      'Authorization': 'token ' + CONFIG.GITHUB_TOKEN,
+      'Accept':        'application/vnd.github.v3+json',
+      'Content-Type':  'application/json',
+    };
+
+    let sha = null;
+    try {
+      const existing = UrlFetchApp.fetch(apiBase, { headers: headers, muteHttpExceptions: true });
+      if (existing.getResponseCode() === 200) {
+        sha = JSON.parse(existing.getContentText()).sha;
+      }
+    } catch(e) { /* file doesn't exist yet, that's fine */ }
+
+    const body = {
+      message: 'Auto-update data.json ' + today,
+      content: encoded,
+    };
+    if (sha) body.sha = sha;
+
+    const resp = UrlFetchApp.fetch(apiBase, {
+      method: 'put',
+      headers: headers,
+      payload: JSON.stringify(body),
+      muteHttpExceptions: true,
+    });
+
+    Logger.log('GitHub push: ' + resp.getResponseCode());
+  } catch(e) {
+    Logger.log('GitHub push error: ' + e.message);
+  }
+}
+  ScriptApp.getProjectTriggers().forEach(function(t) {
+    if (t.getHandlerFunction() === 'runMarketPulse') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('runMarketPulse').timeBased()
+    .onWeekDay(ScriptApp.WeekDay.FRIDAY).atHour(8).create();
+  Logger.log('Trigger created: every Friday 8am');
+}
+
+// ─────────────────────────────────────────
+// TEST — single competitor
+// ─────────────────────────────────────────
+function testSingleCompetitor() {
+  const testName = 'Pennylane';  // ← change to any company in your sheet
+
+  const competitors = loadCompetitors();
+  const c = competitors.find(function(x) { return x.name === testName; });
+  if (!c) { Logger.log('Not found: ' + testName); return; }
+
+  Logger.log('Company: '  + c.name);
+  Logger.log('Tier: '     + c.tier);
+  Logger.log('Region: '   + c.region + ' → ' + c.regionBucket);
+  Logger.log('Language: ' + c.language);
+  Logger.log('Feeds: '    + c.feeds.length + ' configured');
+
+  const articles = fetchArticles(c);
+  Logger.log('Articles found: ' + articles.length);
+  articles.forEach(function(a) {
+    Logger.log('  [' + a.date + '] ' + a.title);
+  });
+
+  if (articles.length > 0) {
+    const results = analyzeBatch([{ competitor: c, articles: articles }]);
+    Logger.log('Claude output:\n' + JSON.stringify(results, null, 2));
+  }
+}
