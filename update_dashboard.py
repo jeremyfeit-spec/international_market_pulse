@@ -81,10 +81,10 @@ def build_sample_raw(archive):
 def inject_into_html(html, sample_data_js, sample_raw_js):
     html = re.sub(
         r"(?:// Auto-generated[^\n]*\n)?const SAMPLE_DATA = \[[\s\S]*?\];",
-        sample_data_js, html)
+        lambda _m: sample_data_js, html)
     html = re.sub(
         r"(?:// Auto-generated[^\n]*\n)?const SAMPLE_RAW = \[[\s\S]*?\];",
-        sample_raw_js, html)
+        lambda _m: sample_raw_js, html)
     return html
 
 
