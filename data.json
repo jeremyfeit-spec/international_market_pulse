@@ -24,7 +24,7 @@
       "signal_type": "Strategy",
       "importance": "High",
       "headline": "Vertex announces 9% workforce reduction and AI-led Value Creation Plan",
-      "summary": "On 28 April Vertex (NASDAQ: VERX) board approved a global \"Value Creation Plan\" — a ~9% workforce reduction (≈170 employees) with $6–8M in pre-tax restructuring charges, paired with a sharpened reinvestment thesis around AI-enabled tax compliance. Signal of broader pressure on legacy tax-engine vendors (Avalara, Sovos, Vertex) to retool around agentic AI as Avalara, Fonoa and others lean in.",
+      "summary": "On 28 April Vertex (NASDAQ: VERX) board approved a global \"Value Creation Plan\" \u2014 a ~9% workforce reduction (\u2248170 employees) with $6\u20138M in pre-tax restructuring charges, paired with a sharpened reinvestment thesis around AI-enabled tax compliance. Signal of broader pressure on legacy tax-engine vendors (Avalara, Sovos, Vertex) to retool around agentic AI as Avalara, Fonoa and others lean in.",
       "source_urls": [
         "https://www.tipranks.com/news/company-announcements/vertex-launches-global-value-creation-and-ai-initiative",
         "https://www.stocktitan.net/sec-filings/VERX/8-k-vertex-inc-reports-material-event-e88bcaed7559.html"
@@ -38,8 +38,8 @@
       "region": "Global",
       "signal_type": "Strategy",
       "importance": "Medium",
-      "headline": "Airwallex launches \"Who Are Ya?\" — Spike Lee Arsenal FC campaign",
-      "summary": "On 25 April Airwallex launched \"Who Are Ya?\" — its largest-ever ad campaign — a two-minute Spike Lee–directed short film tied to its Arsenal FC official software partnership. Phased rollout across the Premier League run-in, the 2026 World Cup in the US, and the start of the 26/27 season. Signals continued aggressive brand spend in UK/EU as Airwallex pushes upmarket against Stripe and into B2B finance tooling that overlaps with QuickBooks Money/Bill Pay use cases.",
+      "headline": "Airwallex launches \"Who Are Ya?\" \u2014 Spike Lee Arsenal FC campaign",
+      "summary": "On 25 April Airwallex launched \"Who Are Ya?\" \u2014 its largest-ever ad campaign \u2014 a two-minute Spike Lee\u2013directed short film tied to its Arsenal FC official software partnership. Phased rollout across the Premier League run-in, the 2026 World Cup in the US, and the start of the 26/27 season. Signals continued aggressive brand spend in UK/EU as Airwallex pushes upmarket against Stripe and into B2B finance tooling that overlaps with QuickBooks Money/Bill Pay use cases.",
       "source_urls": [
         "https://www.airwallex.com/newsroom/airwallex-launches-biggest-ever-ad-campaign-with-arsenal-fc-directed-by-spike-lee",
         "https://www.campaignlive.co.uk/article/review-week-airwallex-takes-shot-football-storytelling/1956549"
@@ -68,8 +68,8 @@
       "region": "APAC / Global",
       "signal_type": "Product",
       "importance": "High",
-      "headline": "Xero launches Xero OS — AI-native operating system relaunch",
-      "summary": "Xero announced Xero OS on 22 April — a full architectural shift from \"system of record\" to \"system of action,\" embedding JAX (its agentic AI assistant) across accounting, payments, payroll, and tax. Draws on 20+ years of SMB data linked to 21,000+ financial institutions and 1,000+ apps globally; positioned as a direct answer to QuickBooks and Intuit's AI moves in its core AU/NZ/UK markets.",
+      "headline": "Xero launches Xero OS \u2014 AI-native operating system relaunch",
+      "summary": "Xero announced Xero OS on 22 April \u2014 a full architectural shift from \"system of record\" to \"system of action,\" embedding JAX (its agentic AI assistant) across accounting, payments, payroll, and tax. Draws on 20+ years of SMB data linked to 21,000+ financial institutions and 1,000+ apps globally; positioned as a direct answer to QuickBooks and Intuit's AI moves in its core AU/NZ/UK markets.",
       "source_urls": [
         "https://blog.xero.com/news-events/xero-os-ai-native-operating-system/",
         "https://www.cpapracticeadvisor.com/2026/04/22/xero-introduces-ai-native-operating-system-for-accountants-and-small-businesses/182042/"
@@ -84,7 +84,7 @@
       "signal_type": "Product",
       "importance": "High",
       "headline": "Sage launches Sage HCM and announces PwC agentic AI partnership",
-      "summary": "On 23 April Sage announced two significant moves: (1) Sage HCM — a new HR/payroll/finance platform for mid-market businesses, launching in the US and Canada, integrating directly with Sage Intacct; (2) a global agentic AI partnership with PwC to automate Sage Intacct deployments — embedding AI across design, configuration, and testing to shorten time-to-value for finance teams worldwide.",
+      "summary": "On 23 April Sage announced two significant moves: (1) Sage HCM \u2014 a new HR/payroll/finance platform for mid-market businesses, launching in the US and Canada, integrating directly with Sage Intacct; (2) a global agentic AI partnership with PwC to automate Sage Intacct deployments \u2014 embedding AI across design, configuration, and testing to shorten time-to-value for finance teams worldwide.",
       "source_urls": [
         "https://www.globenewswire.com/news-release/2026/04/23/3279957/0/en/Sage-launches-Sage-HCM-to-connect-HR-payroll-and-finance-for-mid-market-businesses.html",
         "https://ffnews.com/newsarticle/fintech/sage-and-pwc-use-agentic-ai-to-get-sage-intacct-finance-teams-up-and-running-faster"
@@ -99,7 +99,7 @@
       "signal_type": "Product",
       "importance": "High",
       "headline": "Payhawk launches Spring 2026 release with Financial Controller AI Agent",
-      "summary": "Payhawk launched its Spring 2026 release this week under the theme \"end of invoice chasing\" — introducing a Financial Controller AI Agent that automatically retrieves invoices from Adobe, AWS, Google Ads, Meta, and other platforms each billing cycle, and a Travel Agent that handles booking changes and cancellations autonomously. Over 560 finance teams joined the live showcase.",
+      "summary": "Payhawk launched its Spring 2026 release this week under the theme \"end of invoice chasing\" \u2014 introducing a Financial Controller AI Agent that automatically retrieves invoices from Adobe, AWS, Google Ads, Meta, and other platforms each billing cycle, and a Travel Agent that handles booking changes and cancellations autonomously. Over 560 finance teams joined the live showcase.",
       "source_urls": [
         "https://payhawk.com/editions/spring-2026",
         "https://payhawk.com/blog/spring-2026-product-showcase-questions-answered"
@@ -114,7 +114,7 @@
       "signal_type": "Strategy",
       "importance": "High",
       "headline": "Xero/Anthropic JAX partnership enters integration phase",
-      "summary": "Anthropic CEO Dario Amodei visited Sydney this week to formally open Anthropic's fourth Asia-Pacific office and signed a cooperation MOU with the Australian government — adding institutional weight to Xero's multi-year Claude partnership announced in late March. Xero's AI assistant JAX will use Claude to automate cash flow tracking, invoice chasing, and financial reporting for millions of SMBs across AU, NZ, and the UK; live integrations expected \"in the coming months.\"",
+      "summary": "Anthropic CEO Dario Amodei visited Sydney this week to formally open Anthropic's fourth Asia-Pacific office and signed a cooperation MOU with the Australian government \u2014 adding institutional weight to Xero's multi-year Claude partnership announced in late March. Xero's AI assistant JAX will use Claude to automate cash flow tracking, invoice chasing, and financial reporting for millions of SMBs across AU, NZ, and the UK; live integrations expected \"in the coming months.\"",
       "source_urls": [
         "https://www.investordaily.com.au/saas-pocalyse-enters-integration-phase-with-xero-anthropic-partnership/",
         "https://www.anthropic.com/news/australia-MOU"
@@ -129,7 +129,7 @@
       "signal_type": "Regulatory",
       "importance": "High",
       "headline": "Airwallex launches in Malaysia after Bank Negara approval",
-      "summary": "Airwallex launched its full suite of financial products in Malaysia on 14 April, following Bank Negara Malaysia approval for e-money issuance, currency exchange, and remittance licences — completing a Southeast Asia footprint across Singapore, Hong Kong, and now Malaysia. First major cross-border payments infrastructure player to hold full commercial licences across all three markets simultaneously.",
+      "summary": "Airwallex launched its full suite of financial products in Malaysia on 14 April, following Bank Negara Malaysia approval for e-money issuance, currency exchange, and remittance licences \u2014 completing a Southeast Asia footprint across Singapore, Hong Kong, and now Malaysia. First major cross-border payments infrastructure player to hold full commercial licences across all three markets simultaneously.",
       "source_urls": [
         "https://www.crowdfundinsider.com/2026/04/271036-airwallex-secures-malaysian-approvals/",
         "https://technode.global/2026/04/01/financial-payment-platform-airwallex-ready-for-full-commercial-launch-in-malaysia/"
@@ -144,7 +144,7 @@
       "signal_type": "Product",
       "importance": "High",
       "headline": "Airwallex launches POS Payments terminal across UK, EU, HK, Singapore",
-      "summary": "Airwallex launched Airwallex POS Payments on 16 April — a physical point-of-sale terminal now available in the UK, Europe, Hong Kong, and Singapore — directly challenging Stripe's offline payments dominance with a single unified platform spanning in-store and online commerce. Australia and US rollouts planned. Connects in-person transactions to Airwallex's back-office reporting and FX infrastructure.",
+      "summary": "Airwallex launched Airwallex POS Payments on 16 April \u2014 a physical point-of-sale terminal now available in the UK, Europe, Hong Kong, and Singapore \u2014 directly challenging Stripe's offline payments dominance with a single unified platform spanning in-store and online commerce. Australia and US rollouts planned. Connects in-person transactions to Airwallex's back-office reporting and FX infrastructure.",
       "source_urls": [
         "https://techcrunch.com/2026/04/15/airwallex-is-about-to-take-on-stripe-and-the-rest-of-the-payments-industry-in-the-physical-world/",
         "https://fintechnews.sg/129936/payments/airwallex-pos-payments/"
@@ -159,7 +159,7 @@
       "signal_type": "Strategy",
       "importance": "High",
       "headline": "MYOB signs five-year strategic AI partnership with Microsoft",
-      "summary": "MYOB signed a five-year strategic deal with Microsoft to jointly fund and embed agentic AI across its SMB accounting and business management platform, targeting Australia and New Zealand's 3.28M businesses. Built on Microsoft Foundry, Copilot Studio, and Agent 365, the partnership will deliver intelligent agents for autonomous cash flow forecasting, compliance readiness, and finance workflow automation — with the first \"Powered by Microsoft\" features expected later in 2026.",
+      "summary": "MYOB signed a five-year strategic deal with Microsoft to jointly fund and embed agentic AI across its SMB accounting and business management platform, targeting Australia and New Zealand's 3.28M businesses. Built on Microsoft Foundry, Copilot Studio, and Agent 365, the partnership will deliver intelligent agents for autonomous cash flow forecasting, compliance readiness, and finance workflow automation \u2014 with the first \"Powered by Microsoft\" features expected later in 2026.",
       "source_urls": [
         "https://news.microsoft.com/source/asia/2026/04/08/myob-and-microsoft-sign-five-year-strategic-partnership/",
         "https://www.smartcompany.com.au/technology/accounting-ai-arms-race-heats-up-myob-microsoft-partnership/"
@@ -174,37 +174,418 @@
       "signal_type": "Product",
       "importance": "High",
       "headline": "Zoho Books UK completes Making Tax Digital for Income Tax suite",
-      "summary": "Zoho Books UK completed its Making Tax Digital for Income Tax suite by launching End-of-Year Submission and Tax Return capabilities for sole traders and landlords — enabling the full compliance cycle (quarterly updates → year-end → tax return) entirely within the platform at no cost, timed to the April 6 HMRC mandate start for self-employed individuals and landlords with income above £50,000.",
+      "summary": "Zoho Books UK completed its Making Tax Digital for Income Tax suite by launching End-of-Year Submission and Tax Return capabilities for sole traders and landlords \u2014 enabling the full compliance cycle (quarterly updates \u2192 year-end \u2192 tax return) entirely within the platform at no cost, timed to the April 6 HMRC mandate start for self-employed individuals and landlords with income above \u00a350,000.",
       "source_urls": [
         "https://www.zoho.com/blog/books/stay-mtd-compliant-all-year.html",
         "https://goldstarit.com/zoho-books-uk-edition-is-now-ready-for-mtd-for-income-tax/"
       ]
+    },
+    {
+      "date": "2026-04-24",
+      "company": "Ant International (WorldFirst)",
+      "website": "https://www.worldfirst.com",
+      "tier": "Adjacent",
+      "region": "APAC (Australia)",
+      "signal_type": "Partnerships",
+      "importance": "High",
+      "headline": "Ant International partners with Citi to launch PayTo payment solution for Australian SMEs",
+      "summary": "On 24 Apr, Ant International partnered with Citi to launch a PayTo-enabled payment solution in Australia for SMEs \u2014 integrating real-time account-to-account pull payments into its WorldFirst Global Account Service. Targets Australia's 80%+ of export SMEs impacted by slow cross-border payment delays; World Card Q1 2026 volume already up 440% YoY.",
+      "source_urls": [
+        "https://australianfintech.com.au/ant-international-partners-with-citi-to-launch-payto-payment-solutions-for-australian-smes/",
+        "https://fintechmagazine.com/news/ant-international-and-citi-reshape-sme-payments-with-payto"
+      ]
+    },
+    {
+      "date": "2026-04-27",
+      "company": "Comfi",
+      "website": "https://comfi.ai",
+      "tier": "Adjacent",
+      "region": "Middle East (UAE / MENA)",
+      "signal_type": "Funding",
+      "importance": "High",
+      "headline": "Comfi raises $65M Pre-Series A to scale B2B BNPL across MENA",
+      "summary": "Dubai-based B2B BNPL fintech Comfi raised $65M in a pre-Series A round led by Iliad Partners to scale SME invoice financing across MENA. Comfi lets suppliers offer 90-day payment terms while getting paid within 24 hrs; has processed 15,000+ invoices for 1,000+ clients. Adjacent pressure on QuickBooks Money's working-capital and cash-flow features in a fast-growing MENA SME market.",
+      "source_urls": [
+        "https://www.wamda.com/2026/04/comfi-expands-mena-raising-65-million-pre-series",
+        "https://fintech.global/2026/04/27/b2b-fintech-comfi-secures-65m-pre-series-a-round/"
+      ]
+    },
+    {
+      "date": "2026-04-30",
+      "company": "Taxdoo",
+      "website": "https://www.taxdoo.com",
+      "tier": "Adjacent",
+      "region": "EU (Germany)",
+      "signal_type": "Strategy",
+      "importance": "High",
+      "headline": "Taxdoo shuts down EU VAT compliance services, pivots to AI-driven accounting",
+      "summary": "On 30 Apr, Taxdoo officially ended all VAT compliance services (registrations, filings, OSS reports), affecting thousands of EU e-commerce businesses. The company is pivoting fully to AI-driven accounting under 'Taxdoo Accounting,' citing EU's incoming ViDA reform. Leaves a meaningful gap in the EU e-commerce VAT market \u2014 a signal for Avalara, Fonoa, and Sovos to consolidate Taxdoo's customer base.",
+      "source_urls": [
+        "https://staxxer.com/taxdoo-discountinues-vat-services/",
+        "https://1stopvat.com/germany-taxdoo-vat-compliance-service-provider-ends-its-services/"
+      ]
     }
   ],
   "archive": [
-    {"run_date": "2026-05-01", "article_date": "2026-04-28", "company": "Sage", "tier": "Direct", "category": "M&A", "region": "UK / Global", "title": "Sage acquires Doyen AI to help SMBs migrate and go live faster with AI", "summary": "Sage acquired Doyen AI, a 2024-founded AI startup that automates customer onboarding, data migration and implementation for finance teams.", "url": "https://www.sage.com/en-us/news/press-releases/2026/04/sage-acquires-doyen-ai-to-help-smbs-migrate-and-go-live-faster-with-ai/", "language": "en"},
-    {"run_date": "2026-05-01", "article_date": "2026-04-28", "company": "Sage", "tier": "Direct", "category": "M&A", "region": "UK / Global", "title": "Sage Acquires Doyen AI to Speed Finance Implementations", "summary": "Channel Insider coverage of the Sage/Doyen AI acquisition.", "url": "https://www.channelinsider.com/channel-business/mergers-and-acquisitions/sage-acquires-doyen-ai-finance-implementations/", "language": "en"},
-    {"run_date": "2026-05-01", "article_date": "2026-04-28", "company": "Vertex", "tier": "Adjacent", "category": "Strategy", "region": "Global", "title": "Vertex Launches Global Value Creation and AI Initiative", "summary": "Vertex board approves global Value Creation Plan including ~9% workforce reduction and reinvestment in AI-enabled tax compliance.", "url": "https://www.tipranks.com/news/company-announcements/vertex-launches-global-value-creation-and-ai-initiative", "language": "en"},
-    {"run_date": "2026-05-01", "article_date": "2026-04-28", "company": "Vertex", "tier": "Adjacent", "category": "Strategy", "region": "Global", "title": "Vertex 8-K: ~170-employee reduction; $6-8M pre-tax charges", "summary": "Vertex 8-K filing detailing the workforce reduction, restructuring charges, and AI-led transformation plan.", "url": "https://www.stocktitan.net/sec-filings/VERX/8-k-vertex-inc-reports-material-event-e88bcaed7559.html", "language": "en"},
-    {"run_date": "2026-05-01", "article_date": "2026-04-25", "company": "Airwallex", "tier": "Adjacent", "category": "Brand / Marketing", "region": "Global", "title": "Airwallex launches biggest-ever ad campaign with Arsenal FC, directed by Spike Lee", "summary": "Airwallex launches \"Who Are Ya?\" — its largest-ever ad campaign — a two-minute Spike Lee-directed short film tied to its Arsenal FC official software partnership.", "url": "https://www.airwallex.com/newsroom/airwallex-launches-biggest-ever-ad-campaign-with-arsenal-fc-directed-by-spike-lee", "language": "en"},
-    {"run_date": "2026-05-01", "article_date": "2026-04-25", "company": "Airwallex", "tier": "Adjacent", "category": "Brand / Marketing", "region": "Global", "title": "Review of the Week: Airwallex takes a shot at football storytelling", "summary": "Campaign magazine review of the Airwallex/Arsenal/Spike Lee Who Are Ya? campaign launch.", "url": "https://www.campaignlive.co.uk/article/review-week-airwallex-takes-shot-football-storytelling/1956549", "language": "en"},
-    {"run_date": "2026-05-01", "article_date": "2026-04-28", "company": "Avalara", "tier": "Adjacent", "category": "Partnerships", "region": "Global", "title": "Avalara Celebrates Newest Partner Award Winners", "summary": "Avalara announces its 2025 Partner Award winners across Consulting, Accountant Firm, Implementation Excellence, and Rising Star categories.", "url": "https://newsroom.avalara.com/2026-04-28-Avalara-Celebrates-Newest-Partner-Award-Winners", "language": "en"},
-    {"run_date": "2026-05-01", "article_date": "2026-04-28", "company": "Avalara", "tier": "Adjacent", "category": "Research", "region": "Global", "title": "Property Tax Compliance Tops Six Figures Annually for Most Large Enterprises, Avalara Research Finds", "summary": "Avalara-commissioned survey of 1,000 US finance, tax, fixed asset and IT leaders finds property-tax compliance now exceeds six figures annually at most large enterprises.", "url": "https://www.cpapracticeadvisor.com/2026/04/28/property-tax-compliance-tops-six-figures-annually-for-most-large-enterprises-avalara-research-finds/182373/", "language": "en"},
-    {"run_date": "2026-04-24", "article_date": "2026-04-22", "company": "Xero", "tier": "Direct", "category": "Product", "region": "APAC / Global", "title": "Xero introduces AI-native operating system for accountants and small businesses", "summary": "Xero unveils Xero OS, an AI-native operating system embedding JAX agentic AI across accounting, payments, payroll, and tax.", "url": "https://blog.xero.com/news-events/xero-os-ai-native-operating-system/", "language": "en"},
-    {"run_date": "2026-04-24", "article_date": "2026-04-22", "company": "Xero", "tier": "Direct", "category": "Product", "region": "APAC / Global", "title": "Xero introduces AI-native operating system (CPA Practice Advisor)", "summary": "Industry coverage of Xero OS launch and the system-of-record to system-of-action shift.", "url": "https://www.cpapracticeadvisor.com/2026/04/22/xero-introduces-ai-native-operating-system-for-accountants-and-small-businesses/182042/", "language": "en"},
-    {"run_date": "2026-04-24", "article_date": "2026-04-23", "company": "Sage", "tier": "Direct", "category": "Product", "region": "UK / Global", "title": "Sage launches Sage HCM to connect HR, payroll and finance for mid-market", "summary": "Sage announces Sage HCM, a new HR/payroll/finance platform for mid-market businesses, launching in the US and Canada and integrating with Sage Intacct.", "url": "https://www.globenewswire.com/news-release/2026/04/23/3279957/0/en/Sage-launches-Sage-HCM-to-connect-HR-payroll-and-finance-for-mid-market-businesses.html", "language": "en"},
-    {"run_date": "2026-04-24", "article_date": "2026-04-23", "company": "Sage", "tier": "Direct", "category": "Partnerships", "region": "Global", "title": "Sage and PwC use agentic AI to get Sage Intacct finance teams up and running faster", "summary": "Sage and PwC announce a global agentic AI partnership to automate Sage Intacct deployments across design, configuration, and testing.", "url": "https://ffnews.com/newsarticle/fintech/sage-and-pwc-use-agentic-ai-to-get-sage-intacct-finance-teams-up-and-running-faster", "language": "en"},
-    {"run_date": "2026-04-24", "article_date": "2026-04-22", "company": "Payhawk", "tier": "Adjacent", "category": "Product", "region": "EU (UK / Bulgaria)", "title": "Payhawk Spring 2026 — End of Invoice Chasing", "summary": "Payhawk launches Spring 2026 release with Financial Controller AI Agent and Travel Agent.", "url": "https://payhawk.com/editions/spring-2026", "language": "en"},
-    {"run_date": "2026-04-24", "article_date": "2026-04-22", "company": "Payhawk", "tier": "Adjacent", "category": "Product", "region": "EU (UK / Bulgaria)", "title": "Payhawk Spring 2026 Product Showcase Q&A", "summary": "Follow-up Q&A from Payhawk's Spring 2026 product showcase, with details on the Financial Controller AI Agent.", "url": "https://payhawk.com/blog/spring-2026-product-showcase-questions-answered", "language": "en"},
-    {"run_date": "2026-04-17", "article_date": "2026-04-15", "company": "Xero", "tier": "Direct", "category": "Strategy", "region": "APAC (Australia)", "title": "SaaS-pocalypse enters integration phase with Xero/Anthropic partnership", "summary": "Anthropic CEO Dario Amodei opens APAC office in Sydney; Xero/Anthropic JAX partnership moves into integration phase.", "url": "https://www.investordaily.com.au/saas-pocalyse-enters-integration-phase-with-xero-anthropic-partnership/", "language": "en"},
-    {"run_date": "2026-04-17", "article_date": "2026-04-15", "company": "Xero", "tier": "Direct", "category": "Strategy", "region": "APAC (Australia)", "title": "Anthropic Australia MOU", "summary": "Anthropic signs cooperation MOU with the Australian government, adding institutional weight to the Xero partnership.", "url": "https://www.anthropic.com/news/australia-MOU", "language": "en"},
-    {"run_date": "2026-04-17", "article_date": "2026-04-14", "company": "Airwallex", "tier": "Adjacent", "category": "Regulatory", "region": "APAC (Malaysia)", "title": "Airwallex secures Malaysian approvals", "summary": "Airwallex receives Bank Negara Malaysia approval for e-money, currency exchange, and remittance licences.", "url": "https://www.crowdfundinsider.com/2026/04/271036-airwallex-secures-malaysian-approvals/", "language": "en"},
-    {"run_date": "2026-04-17", "article_date": "2026-04-14", "company": "Airwallex", "tier": "Adjacent", "category": "Regulatory", "region": "APAC (Malaysia)", "title": "Airwallex ready for full commercial launch in Malaysia", "summary": "Coverage of Airwallex's full commercial launch in Malaysia and Southeast Asia footprint completion.", "url": "https://technode.global/2026/04/01/financial-payment-platform-airwallex-ready-for-full-commercial-launch-in-malaysia/", "language": "en"},
-    {"run_date": "2026-04-17", "article_date": "2026-04-16", "company": "Airwallex", "tier": "Adjacent", "category": "Product", "region": "EU / APAC", "title": "Airwallex is about to take on Stripe in the physical world", "summary": "Airwallex launches POS Payments — a physical point-of-sale terminal in UK, Europe, Hong Kong, and Singapore, directly challenging Stripe.", "url": "https://techcrunch.com/2026/04/15/airwallex-is-about-to-take-on-stripe-and-the-rest-of-the-payments-industry-in-the-physical-world/", "language": "en"},
-    {"run_date": "2026-04-17", "article_date": "2026-04-16", "company": "Airwallex", "tier": "Adjacent", "category": "Product", "region": "EU / APAC", "title": "Airwallex POS Payments launch (Fintech News SG)", "summary": "Fintech News Singapore coverage of the Airwallex POS Payments launch and product details.", "url": "https://fintechnews.sg/129936/payments/airwallex-pos-payments/", "language": "en"},
-    {"run_date": "2026-04-10", "article_date": "2026-04-08", "company": "MYOB", "tier": "Direct", "category": "Strategy", "region": "APAC", "title": "MYOB and Microsoft sign five-year strategic partnership", "summary": "MYOB signs a five-year strategic deal with Microsoft to jointly fund and embed agentic AI across its SMB platform.", "url": "https://news.microsoft.com/source/asia/2026/04/08/myob-and-microsoft-sign-five-year-strategic-partnership/", "language": "en"},
-    {"run_date": "2026-04-10", "article_date": "2026-04-08", "company": "MYOB", "tier": "Direct", "category": "Strategy", "region": "APAC", "title": "Accounting AI arms race heats up — MYOB Microsoft partnership", "summary": "SmartCompany analysis of the MYOB/Microsoft AI partnership and its implications for the AU/NZ accounting market.", "url": "https://www.smartcompany.com.au/technology/accounting-ai-arms-race-heats-up-myob-microsoft-partnership/", "language": "en"},
-    {"run_date": "2026-04-10", "article_date": "2026-04-06", "company": "Zoho Books", "tier": "Direct", "category": "Product", "region": "UK", "title": "Stay MTD compliant all year — Zoho Books UK completes MTD for Income Tax", "summary": "Zoho Books UK launches End-of-Year Submission and Tax Return capabilities, completing the full MTD for Income Tax compliance cycle.", "url": "https://www.zoho.com/blog/books/stay-mtd-compliant-all-year.html", "language": "en"},
-    {"run_date": "2026-04-10", "article_date": "2026-04-06", "company": "Zoho Books", "tier": "Direct", "category": "Product", "region": "UK", "title": "Zoho Books UK Edition is now ready for MTD for Income Tax", "summary": "Goldstar IT confirms Zoho Books UK readiness for the April 6 HMRC MTD for Income Tax mandate.", "url": "https://goldstarit.com/zoho-books-uk-edition-is-now-ready-for-mtd-for-income-tax/", "language": "en"}
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-28",
+      "company": "Sage",
+      "tier": "Direct",
+      "category": "M&A",
+      "region": "UK / Global",
+      "title": "Sage acquires Doyen AI to help SMBs migrate and go live faster with AI",
+      "summary": "Sage acquired Doyen AI, a 2024-founded AI startup that automates customer onboarding, data migration and implementation for finance teams.",
+      "url": "https://www.sage.com/en-us/news/press-releases/2026/04/sage-acquires-doyen-ai-to-help-smbs-migrate-and-go-live-faster-with-ai/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-28",
+      "company": "Sage",
+      "tier": "Direct",
+      "category": "M&A",
+      "region": "UK / Global",
+      "title": "Sage Acquires Doyen AI to Speed Finance Implementations",
+      "summary": "Channel Insider coverage of the Sage/Doyen AI acquisition.",
+      "url": "https://www.channelinsider.com/channel-business/mergers-and-acquisitions/sage-acquires-doyen-ai-finance-implementations/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-28",
+      "company": "Vertex",
+      "tier": "Adjacent",
+      "category": "Strategy",
+      "region": "Global",
+      "title": "Vertex Launches Global Value Creation and AI Initiative",
+      "summary": "Vertex board approves global Value Creation Plan including ~9% workforce reduction and reinvestment in AI-enabled tax compliance.",
+      "url": "https://www.tipranks.com/news/company-announcements/vertex-launches-global-value-creation-and-ai-initiative",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-28",
+      "company": "Vertex",
+      "tier": "Adjacent",
+      "category": "Strategy",
+      "region": "Global",
+      "title": "Vertex 8-K: ~170-employee reduction; $6-8M pre-tax charges",
+      "summary": "Vertex 8-K filing detailing the workforce reduction, restructuring charges, and AI-led transformation plan.",
+      "url": "https://www.stocktitan.net/sec-filings/VERX/8-k-vertex-inc-reports-material-event-e88bcaed7559.html",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-25",
+      "company": "Airwallex",
+      "tier": "Adjacent",
+      "category": "Brand / Marketing",
+      "region": "Global",
+      "title": "Airwallex launches biggest-ever ad campaign with Arsenal FC, directed by Spike Lee",
+      "summary": "Airwallex launches \"Who Are Ya?\" \u2014 its largest-ever ad campaign \u2014 a two-minute Spike Lee-directed short film tied to its Arsenal FC official software partnership.",
+      "url": "https://www.airwallex.com/newsroom/airwallex-launches-biggest-ever-ad-campaign-with-arsenal-fc-directed-by-spike-lee",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-25",
+      "company": "Airwallex",
+      "tier": "Adjacent",
+      "category": "Brand / Marketing",
+      "region": "Global",
+      "title": "Review of the Week: Airwallex takes a shot at football storytelling",
+      "summary": "Campaign magazine review of the Airwallex/Arsenal/Spike Lee Who Are Ya? campaign launch.",
+      "url": "https://www.campaignlive.co.uk/article/review-week-airwallex-takes-shot-football-storytelling/1956549",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-28",
+      "company": "Avalara",
+      "tier": "Adjacent",
+      "category": "Partnerships",
+      "region": "Global",
+      "title": "Avalara Celebrates Newest Partner Award Winners",
+      "summary": "Avalara announces its 2025 Partner Award winners across Consulting, Accountant Firm, Implementation Excellence, and Rising Star categories.",
+      "url": "https://newsroom.avalara.com/2026-04-28-Avalara-Celebrates-Newest-Partner-Award-Winners",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-28",
+      "company": "Avalara",
+      "tier": "Adjacent",
+      "category": "Research",
+      "region": "Global",
+      "title": "Property Tax Compliance Tops Six Figures Annually for Most Large Enterprises, Avalara Research Finds",
+      "summary": "Avalara-commissioned survey of 1,000 US finance, tax, fixed asset and IT leaders finds property-tax compliance now exceeds six figures annually at most large enterprises.",
+      "url": "https://www.cpapracticeadvisor.com/2026/04/28/property-tax-compliance-tops-six-figures-annually-for-most-large-enterprises-avalara-research-finds/182373/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-24",
+      "article_date": "2026-04-22",
+      "company": "Xero",
+      "tier": "Direct",
+      "category": "Product",
+      "region": "APAC / Global",
+      "title": "Xero introduces AI-native operating system for accountants and small businesses",
+      "summary": "Xero unveils Xero OS, an AI-native operating system embedding JAX agentic AI across accounting, payments, payroll, and tax.",
+      "url": "https://blog.xero.com/news-events/xero-os-ai-native-operating-system/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-24",
+      "article_date": "2026-04-22",
+      "company": "Xero",
+      "tier": "Direct",
+      "category": "Product",
+      "region": "APAC / Global",
+      "title": "Xero introduces AI-native operating system (CPA Practice Advisor)",
+      "summary": "Industry coverage of Xero OS launch and the system-of-record to system-of-action shift.",
+      "url": "https://www.cpapracticeadvisor.com/2026/04/22/xero-introduces-ai-native-operating-system-for-accountants-and-small-businesses/182042/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-24",
+      "article_date": "2026-04-23",
+      "company": "Sage",
+      "tier": "Direct",
+      "category": "Product",
+      "region": "UK / Global",
+      "title": "Sage launches Sage HCM to connect HR, payroll and finance for mid-market",
+      "summary": "Sage announces Sage HCM, a new HR/payroll/finance platform for mid-market businesses, launching in the US and Canada and integrating with Sage Intacct.",
+      "url": "https://www.globenewswire.com/news-release/2026/04/23/3279957/0/en/Sage-launches-Sage-HCM-to-connect-HR-payroll-and-finance-for-mid-market-businesses.html",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-24",
+      "article_date": "2026-04-23",
+      "company": "Sage",
+      "tier": "Direct",
+      "category": "Partnerships",
+      "region": "Global",
+      "title": "Sage and PwC use agentic AI to get Sage Intacct finance teams up and running faster",
+      "summary": "Sage and PwC announce a global agentic AI partnership to automate Sage Intacct deployments across design, configuration, and testing.",
+      "url": "https://ffnews.com/newsarticle/fintech/sage-and-pwc-use-agentic-ai-to-get-sage-intacct-finance-teams-up-and-running-faster",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-24",
+      "article_date": "2026-04-22",
+      "company": "Payhawk",
+      "tier": "Adjacent",
+      "category": "Product",
+      "region": "EU (UK / Bulgaria)",
+      "title": "Payhawk Spring 2026 \u2014 End of Invoice Chasing",
+      "summary": "Payhawk launches Spring 2026 release with Financial Controller AI Agent and Travel Agent.",
+      "url": "https://payhawk.com/editions/spring-2026",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-24",
+      "article_date": "2026-04-22",
+      "company": "Payhawk",
+      "tier": "Adjacent",
+      "category": "Product",
+      "region": "EU (UK / Bulgaria)",
+      "title": "Payhawk Spring 2026 Product Showcase Q&A",
+      "summary": "Follow-up Q&A from Payhawk's Spring 2026 product showcase, with details on the Financial Controller AI Agent.",
+      "url": "https://payhawk.com/blog/spring-2026-product-showcase-questions-answered",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-17",
+      "article_date": "2026-04-15",
+      "company": "Xero",
+      "tier": "Direct",
+      "category": "Strategy",
+      "region": "APAC (Australia)",
+      "title": "SaaS-pocalypse enters integration phase with Xero/Anthropic partnership",
+      "summary": "Anthropic CEO Dario Amodei opens APAC office in Sydney; Xero/Anthropic JAX partnership moves into integration phase.",
+      "url": "https://www.investordaily.com.au/saas-pocalyse-enters-integration-phase-with-xero-anthropic-partnership/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-17",
+      "article_date": "2026-04-15",
+      "company": "Xero",
+      "tier": "Direct",
+      "category": "Strategy",
+      "region": "APAC (Australia)",
+      "title": "Anthropic Australia MOU",
+      "summary": "Anthropic signs cooperation MOU with the Australian government, adding institutional weight to the Xero partnership.",
+      "url": "https://www.anthropic.com/news/australia-MOU",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-17",
+      "article_date": "2026-04-14",
+      "company": "Airwallex",
+      "tier": "Adjacent",
+      "category": "Regulatory",
+      "region": "APAC (Malaysia)",
+      "title": "Airwallex secures Malaysian approvals",
+      "summary": "Airwallex receives Bank Negara Malaysia approval for e-money, currency exchange, and remittance licences.",
+      "url": "https://www.crowdfundinsider.com/2026/04/271036-airwallex-secures-malaysian-approvals/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-17",
+      "article_date": "2026-04-14",
+      "company": "Airwallex",
+      "tier": "Adjacent",
+      "category": "Regulatory",
+      "region": "APAC (Malaysia)",
+      "title": "Airwallex ready for full commercial launch in Malaysia",
+      "summary": "Coverage of Airwallex's full commercial launch in Malaysia and Southeast Asia footprint completion.",
+      "url": "https://technode.global/2026/04/01/financial-payment-platform-airwallex-ready-for-full-commercial-launch-in-malaysia/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-17",
+      "article_date": "2026-04-16",
+      "company": "Airwallex",
+      "tier": "Adjacent",
+      "category": "Product",
+      "region": "EU / APAC",
+      "title": "Airwallex is about to take on Stripe in the physical world",
+      "summary": "Airwallex launches POS Payments \u2014 a physical point-of-sale terminal in UK, Europe, Hong Kong, and Singapore, directly challenging Stripe.",
+      "url": "https://techcrunch.com/2026/04/15/airwallex-is-about-to-take-on-stripe-and-the-rest-of-the-payments-industry-in-the-physical-world/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-17",
+      "article_date": "2026-04-16",
+      "company": "Airwallex",
+      "tier": "Adjacent",
+      "category": "Product",
+      "region": "EU / APAC",
+      "title": "Airwallex POS Payments launch (Fintech News SG)",
+      "summary": "Fintech News Singapore coverage of the Airwallex POS Payments launch and product details.",
+      "url": "https://fintechnews.sg/129936/payments/airwallex-pos-payments/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-10",
+      "article_date": "2026-04-08",
+      "company": "MYOB",
+      "tier": "Direct",
+      "category": "Strategy",
+      "region": "APAC",
+      "title": "MYOB and Microsoft sign five-year strategic partnership",
+      "summary": "MYOB signs a five-year strategic deal with Microsoft to jointly fund and embed agentic AI across its SMB platform.",
+      "url": "https://news.microsoft.com/source/asia/2026/04/08/myob-and-microsoft-sign-five-year-strategic-partnership/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-10",
+      "article_date": "2026-04-08",
+      "company": "MYOB",
+      "tier": "Direct",
+      "category": "Strategy",
+      "region": "APAC",
+      "title": "Accounting AI arms race heats up \u2014 MYOB Microsoft partnership",
+      "summary": "SmartCompany analysis of the MYOB/Microsoft AI partnership and its implications for the AU/NZ accounting market.",
+      "url": "https://www.smartcompany.com.au/technology/accounting-ai-arms-race-heats-up-myob-microsoft-partnership/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-10",
+      "article_date": "2026-04-06",
+      "company": "Zoho Books",
+      "tier": "Direct",
+      "category": "Product",
+      "region": "UK",
+      "title": "Stay MTD compliant all year \u2014 Zoho Books UK completes MTD for Income Tax",
+      "summary": "Zoho Books UK launches End-of-Year Submission and Tax Return capabilities, completing the full MTD for Income Tax compliance cycle.",
+      "url": "https://www.zoho.com/blog/books/stay-mtd-compliant-all-year.html",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-04-10",
+      "article_date": "2026-04-06",
+      "company": "Zoho Books",
+      "tier": "Direct",
+      "category": "Product",
+      "region": "UK",
+      "title": "Zoho Books UK Edition is now ready for MTD for Income Tax",
+      "summary": "Goldstar IT confirms Zoho Books UK readiness for the April 6 HMRC MTD for Income Tax mandate.",
+      "url": "https://goldstarit.com/zoho-books-uk-edition-is-now-ready-for-mtd-for-income-tax/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-24",
+      "company": "Ant International (WorldFirst)",
+      "tier": "Adjacent",
+      "category": "Partnerships",
+      "region": "APAC (Australia)",
+      "title": "Ant International partners with Citi to launch PayTo payment solutions for Australian SMEs",
+      "summary": "Ant International and Citi launch PayTo-enabled real-time payment solution for Australian SMEs via WorldFirst Global Account Service.",
+      "url": "https://australianfintech.com.au/ant-international-partners-with-citi-to-launch-payto-payment-solutions-for-australian-smes/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-24",
+      "company": "Ant International (WorldFirst)",
+      "tier": "Adjacent",
+      "category": "Partnerships",
+      "region": "APAC (Australia)",
+      "title": "Ant International and Citi Reshape SME Payments with PayTo",
+      "summary": "FinTech Magazine coverage of Ant International and Citi's PayTo solution for Australian SMEs.",
+      "url": "https://fintechmagazine.com/news/ant-international-and-citi-reshape-sme-payments-with-payto",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-27",
+      "company": "Comfi",
+      "tier": "Adjacent",
+      "category": "Funding",
+      "region": "Middle East (UAE / MENA)",
+      "title": "Comfi expands across MENA after raising $65 million pre-Series A",
+      "summary": "Wamda coverage of Comfi's $65M pre-Series A round and plans to scale SME BNPL across MENA.",
+      "url": "https://www.wamda.com/2026/04/comfi-expands-mena-raising-65-million-pre-series",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-27",
+      "company": "Comfi",
+      "tier": "Adjacent",
+      "category": "Funding",
+      "region": "Middle East (UAE / MENA)",
+      "title": "B2B FinTech Comfi secures $65m Pre-Series A round",
+      "summary": "Fintech Global coverage of Comfi's pre-Series A round led by Iliad Partners.",
+      "url": "https://fintech.global/2026/04/27/b2b-fintech-comfi-secures-65m-pre-series-a-round/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-30",
+      "company": "Taxdoo",
+      "tier": "Adjacent",
+      "category": "Strategy",
+      "region": "EU (Germany)",
+      "title": "Taxdoo discontinues VAT services: what does this mean for e-commerce entrepreneurs?",
+      "summary": "Staxxer analysis of Taxdoo ending all VAT compliance services on April 30 and what it means for EU e-commerce businesses.",
+      "url": "https://staxxer.com/taxdoo-discountinues-vat-services/",
+      "language": "en"
+    },
+    {
+      "run_date": "2026-05-01",
+      "article_date": "2026-04-30",
+      "company": "Taxdoo",
+      "tier": "Adjacent",
+      "category": "Strategy",
+      "region": "EU (Germany)",
+      "title": "Germany \u2014 Taxdoo VAT Compliance Service Provider Ends its Services",
+      "summary": "1StopVAT analysis of Taxdoo's shutdown, the ViDA reform rationale, and what EU e-commerce sellers should do next.",
+      "url": "https://1stopvat.com/germany-taxdoo-vat-compliance-service-provider-ends-its-services/",
+      "language": "en"
+    }
   ]
 }
