@@ -1,7 +1,7 @@
 {
   "signals": [
     {
-      "date": "2026-04-28",
+      "date": "2026-05-01",
       "company": "Sage",
       "website": "https://www.sage.com",
       "tier": "Direct",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "date": "2026-04-28",
+      "date": "2026-05-01",
       "company": "Vertex",
       "website": "https://www.vertexinc.com",
       "tier": "Adjacent",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "date": "2026-04-25",
+      "date": "2026-04-24",
       "company": "Airwallex",
       "website": "https://www.airwallex.com",
       "tier": "Adjacent",
@@ -46,7 +46,7 @@
       ]
     },
     {
-      "date": "2026-04-28",
+      "date": "2026-05-01",
       "company": "Avalara",
       "website": "https://www.avalara.com",
       "tier": "Adjacent",
@@ -61,7 +61,7 @@
       ]
     },
     {
-      "date": "2026-04-22",
+      "date": "2026-04-24",
       "company": "Xero",
       "website": "https://www.xero.com",
       "tier": "Direct",
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "date": "2026-04-23",
+      "date": "2026-04-24",
       "company": "Sage",
       "website": "https://www.sage.com",
       "tier": "Direct",
@@ -91,7 +91,7 @@
       ]
     },
     {
-      "date": "2026-04-22",
+      "date": "2026-04-24",
       "company": "Payhawk",
       "website": "https://payhawk.com",
       "tier": "Adjacent",
@@ -106,7 +106,7 @@
       ]
     },
     {
-      "date": "2026-04-15",
+      "date": "2026-04-17",
       "company": "Xero",
       "website": "https://www.xero.com",
       "tier": "Direct",
@@ -121,7 +121,7 @@
       ]
     },
     {
-      "date": "2026-04-14",
+      "date": "2026-04-17",
       "company": "Airwallex",
       "website": "https://www.airwallex.com",
       "tier": "Adjacent",
@@ -136,7 +136,7 @@
       ]
     },
     {
-      "date": "2026-04-16",
+      "date": "2026-04-17",
       "company": "Airwallex",
       "website": "https://www.airwallex.com",
       "tier": "Adjacent",
@@ -151,7 +151,7 @@
       ]
     },
     {
-      "date": "2026-04-08",
+      "date": "2026-04-10",
       "company": "MYOB",
       "website": "https://www.myob.com",
       "tier": "Direct",
@@ -166,7 +166,7 @@
       ]
     },
     {
-      "date": "2026-04-06",
+      "date": "2026-04-10",
       "company": "Zoho Books",
       "website": "https://www.zoho.com/books/",
       "tier": "Direct",
@@ -196,7 +196,7 @@
       ]
     },
     {
-      "date": "2026-04-27",
+      "date": "2026-05-01",
       "company": "Comfi",
       "website": "https://comfi.ai",
       "tier": "Adjacent",
@@ -211,7 +211,7 @@
       ]
     },
     {
-      "date": "2026-04-30",
+      "date": "2026-05-01",
       "company": "Taxdoo",
       "website": "https://www.taxdoo.com",
       "tier": "Adjacent",
@@ -226,7 +226,7 @@
       ]
     },
     {
-      "date": "2026-05-07",
+      "date": "2026-05-08",
       "company": "Vertex",
       "website": "https://www.vertexinc.com",
       "tier": "Adjacent",
